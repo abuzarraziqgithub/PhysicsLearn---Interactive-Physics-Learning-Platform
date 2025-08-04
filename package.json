@@ -1,0 +1,65 @@
+{
+  "name": "physicslearn-platform",
+  "version": "1.0.0",
+  "description": "An interactive physics learning platform with simulations, educational resources, and community features",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server . -p 8080 -o",
+    "dev": "npx live-server --port=8080 --open=/index.html",
+    "build": "echo 'Build completed - static files ready for deployment'",
+    "test": "echo 'No tests specified'",
+    "lint": "npx eslint js/**/*.js",
+    "format": "npx prettier --write *.html css/**/*.css js/**/*.js",
+    "serve": "npx http-server . -p 8080"
+  },
+  "keywords": [
+    "physics",
+    "education",
+    "interactive",
+    "simulations",
+    "learning",
+    "science",
+    "p5js",
+    "javascript",
+    "html5",
+    "css3"
+  ],
+  "author": "PhysicsLearn Team",
+  "license": "MIT",
+  "homepage": "https://github.com/physicslearn/platform",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/physicslearn/platform.git"
+  },
+  "bugs": {
+    "url": "https://github.com/physicslearn/platform/issues"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "prettier": "^2.8.0",
+    "http-server": "^14.1.0",
+    "live-server": "^1.2.2"
+  },
+  "dependencies": {},
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie <= 11"
+  ],
+  "files": [
+    "index.html",
+    "simulations.html",
+    "resources.html",
+    "login.html",
+    "contact.html",
+    "css/",
+    "js/",
+    "assets/",
+    "README.md"
+  ]
+}

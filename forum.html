@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Forum - PhysicsLearn</title>
+    <meta name="description" content="Join our vibrant physics learning community. Ask questions, share knowledge, and collaborate with fellow students and educators.">
+    <meta name="keywords" content="physics forum, physics community, physics discussion, physics help, physics education">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Community Forum - PhysicsLearn">
+    <meta property="og:description" content="Join our vibrant physics learning community for discussions and collaborative learning.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://physicslearn.com/forum">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/forum.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="index.html" class="logo" aria-label="PhysicsLearn Home">
+                    <i class="fas fa-atom" aria-hidden="true"></i>
+                    PhysicsLearn
+                </a>
+            </div>
+            
+            <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <div class="nav-menu" role="menubar">
+                <a href="index.html" class="nav-link" role="menuitem">Home</a>
+                <a href="simulations.html" class="nav-link" role="menuitem">Simulations</a>
+                <a href="resources.html" class="nav-link" role="menuitem">Resources</a>
+                <a href="forum.html" class="nav-link active" role="menuitem" aria-current="page">Forum</a>
+                <a href="contact.html" class="nav-link" role="menuitem">Contact</a>
+                <a href="login.html" class="btn btn-outline" role="menuitem">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="page-header">
+        <div class="container">
+            <div class="header-content">
+                <h1>Community Forum</h1>
+                <p class="header-subtitle">Connect, collaborate, and learn with fellow physics enthusiasts from around the world</p>
+                
+                <div class="forum-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">12,847</span>
+                        <span class="stat-label">Members</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">3,456</span>
+                        <span class="stat-label">Discussions</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">25,891</span>
+                        <span class="stat-label">Replies</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">1,234</span>
+                        <span class="stat-label">Online Now</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Forum Search and Actions -->
+            <section class="forum-actions" aria-label="Forum search and actions">
+                <div class="search-container">
+                    <div class="search-box">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <input type="search" placeholder="Search discussions, topics, or users..." 
+                               aria-label="Search forum" class="search-input">
+                    </div>
+                    <button class="btn btn-primary new-topic-btn" aria-label="Start new discussion">
+                        <i class="fas fa-plus" aria-hidden="true"></i>
+                        New Topic
+                    </button>
+                </div>
+                
+                <div class="forum-filters">
+                    <button class="filter-btn active" data-filter="all">All Topics</button>
+                    <button class="filter-btn" data-filter="questions">Questions</button>
+                    <button class="filter-btn" data-filter="discussions">Discussions</button>
+                    <button class="filter-btn" data-filter="solved">Solved</button>
+                    <button class="filter-btn" data-filter="unanswered">Unanswered</button>
+                </div>
+            </section>
+
+            <!-- Forum Categories -->
+            <section class="forum-categories" aria-label="Forum categories">
+                <h2>Popular Categories</h2>
+                <div class="categories-grid">
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-atom" aria-hidden="true"></i>
+                        </div>
+                        <div class="category-content">
+                            <h3><a href="#" class="category-link">Classical Mechanics</a></h3>
+                            <p>Newton's laws, kinematics, dynamics, and energy</p>
+                            <div class="category-stats">
+                                <span><i class="fas fa-comments" aria-hidden="true"></i> 234 topics</span>
+                                <span><i class="fas fa-reply" aria-hidden="true"></i> 1,567 replies</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-wave-square" aria-hidden="true"></i>
+                        </div>
+                        <div class="category-content">
+                            <h3><a href="#" class="category-link">Waves & Oscillations</a></h3>
+                            <p>Simple harmonic motion, wave properties, and interference</p>
+                            <div class="category-stats">
+                                <span><i class="fas fa-comments" aria-hidden="true"></i> 189 topics</span>
+                                <span><i class="fas fa-reply" aria-hidden="true"></i> 1,245 replies</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-bolt" aria-hidden="true"></i>
+                        </div>
+                        <div class="category-content">
+                            <h3><a href="#" class="category-link">Electromagnetism</a></h3>
+                            <p>Electric fields, magnetic fields, and electromagnetic waves</p>
+                            <div class="category-stats">
+                                <span><i class="fas fa-comments" aria-hidden="true"></i> 156 topics</span>
+                                <span><i class="fas fa-reply" aria-hidden="true"></i> 987 replies</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-fire" aria-hidden="true"></i>
+                        </div>
+                        <div class="category-content">
+                            <h3><a href="#" class="category-link">Thermodynamics</a></h3>
+                            <p>Heat, temperature, entropy, and energy transfer</p>
+                            <div class="category-stats">
+                                <span><i class="fas fa-comments" aria-hidden="true"></i> 143 topics</span>
+                                <span><i class="fas fa-reply" aria-hidden="true"></i> 876 replies</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-atom" aria-hidden="true"></i>
+                        </div>
+                        <div class="category-content">
+                            <h3><a href="#" class="category-link">Quantum Physics</a></h3>
+                            <p>Quantum mechanics, atomic structure, and particle physics</p>
+                            <div class="category-stats">
+                                <span><i class="fas fa-comments" aria-hidden="true"></i> 201 topics</span>
+                                <span><i class="fas fa-reply" aria-hidden="true"></i> 1,334 replies</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-calculator" aria-hidden="true"></i>
+                        </div>
+                        <div class="category-content">
+                            <h3><a href="#" class="category-link">Problem Solving</a></h3>
+                            <p>Get help with homework and practice problems</p>
+                            <div class="category-stats">
+                                <span><i class="fas fa-comments" aria-hidden="true"></i> 567 topics</span>
+                                <span><i class="fas fa-reply" aria-hidden="true"></i> 3,456 replies</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Discussions -->
+            <section class="recent-discussions" aria-label="Recent discussions">
+                <div class="section-header">
+                    <h2>Recent Discussions</h2>
+                    <div class="sort-options">
+                        <label for="sort-select" class="sr-only">Sort discussions by</label>
+                        <select id="sort-select" class="sort-select">
+                            <option value="recent">Most Recent</option>
+                            <option value="popular">Most Popular</option>
+                            <option value="unanswered">Unanswered</option>
+                            <option value="solved">Recently Solved</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="discussions-list">
+                    <article class="discussion-item" tabindex="0">
+                        <div class="discussion-avatar">
+                            <img src="https://via.placeholder.com/40x40/3b82f6/ffffff?text=JS" alt="User avatar" class="avatar">
+                        </div>
+                        <div class="discussion-content">
+                            <h3 class="discussion-title">
+                                <a href="#" class="discussion-link">Understanding conservation of momentum in collisions</a>
+                                <span class="discussion-badge solved">Solved</span>
+                            </h3>
+                            <p class="discussion-excerpt">I'm having trouble understanding how momentum is conserved in elastic vs inelastic collisions. Can someone explain the difference and provide some examples?</p>
+                            <div class="discussion-meta">
+                                <span class="author">by <strong>John Smith</strong></span>
+                                <span class="category">in <a href="#" class="category-link">Classical Mechanics</a></span>
+                                <span class="timestamp">2 hours ago</span>
+                                <div class="discussion-stats">
+                                    <span><i class="fas fa-thumbs-up" aria-hidden="true"></i> 12</span>
+                                    <span><i class="fas fa-reply" aria-hidden="true"></i> 5</span>
+                                    <span><i class="fas fa-eye" aria-hidden="true"></i> 87</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article class="discussion-item" tabindex="0">
+                        <div class="discussion-avatar">
+                            <img src="https://via.placeholder.com/40x40/10b981/ffffff?text=MR" alt="User avatar" class="avatar">
+                        </div>
+                        <div class="discussion-content">
+                            <h3 class="discussion-title">
+                                <a href="#" class="discussion-link">Wave interference patterns in water</a>
+                                <span class="discussion-badge hot">Hot</span>
+                            </h3>
+                            <p class="discussion-excerpt">I've been experimenting with wave tanks and noticed some interesting interference patterns. Has anyone tried creating standing waves with multiple sources?</p>
+                            <div class="discussion-meta">
+                                <span class="author">by <strong>Maria Rodriguez</strong></span>
+                                <span class="category">in <a href="#" class="category-link">Waves & Oscillations</a></span>
+                                <span class="timestamp">4 hours ago</span>
+                                <div class="discussion-stats">
+                                    <span><i class="fas fa-thumbs-up" aria-hidden="true"></i> 8</span>
+                                    <span><i class="fas fa-reply" aria-hidden="true"></i> 12</span>
+                                    <span><i class="fas fa-eye" aria-hidden="true"></i> 156</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article class="discussion-item" tabindex="0">
+                        <div class="discussion-avatar">
+                            <img src="https://via.placeholder.com/40x40/f59e0b/ffffff?text=DL" alt="User avatar" class="avatar">
+                        </div>
+                        <div class="discussion-content">
+                            <h3 class="discussion-title">
+                                <a href="#" class="discussion-link">Electric field visualization techniques</a>
+                            </h3>
+                            <p class="discussion-excerpt">Looking for better ways to visualize electric fields in 3D. What software or tools do you recommend for creating clear field line diagrams?</p>
+                            <div class="discussion-meta">
+                                <span class="author">by <strong>David Lee</strong></span>
+                                <span class="category">in <a href="#" class="category-link">Electromagnetism</a></span>
+                                <span class="timestamp">6 hours ago</span>
+                                <div class="discussion-stats">
+                                    <span><i class="fas fa-thumbs-up" aria-hidden="true"></i> 15</span>
+                                    <span><i class="fas fa-reply" aria-hidden="true"></i> 8</span>
+                                    <span><i class="fas fa-eye" aria-hidden="true"></i> 234</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article class="discussion-item" tabindex="0">
+                        <div class="discussion-avatar">
+                            <img src="https://via.placeholder.com/40x40/8b5cf6/ffffff?text=SB" alt="User avatar" class="avatar">
+                        </div>
+                        <div class="discussion-content">
+                            <h3 class="discussion-title">
+                                <a href="#" class="discussion-link">Quantum tunneling explained simply</a>
+                                <span class="discussion-badge question">Question</span>
+                            </h3>
+                            <p class="discussion-excerpt">Can someone explain quantum tunneling in simple terms? I understand the math but struggle with the physical interpretation. How can a particle "go through" a barrier?</p>
+                            <div class="discussion-meta">
+                                <span class="author">by <strong>Sarah Brown</strong></span>
+                                <span class="category">in <a href="#" class="category-link">Quantum Physics</a></span>
+                                <span class="timestamp">8 hours ago</span>
+                                <div class="discussion-stats">
+                                    <span><i class="fas fa-thumbs-up" aria-hidden="true"></i> 23</span>
+                                    <span><i class="fas fa-reply" aria-hidden="true"></i> 15</span>
+                                    <span><i class="fas fa-eye" aria-hidden="true"></i> 312</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article class="discussion-item" tabindex="0">
+                        <div class="discussion-avatar">
+                            <img src="https://via.placeholder.com/40x40/ef4444/ffffff?text=AT" alt="User avatar" class="avatar">
+                        </div>
+                        <div class="discussion-content">
+                            <h3 class="discussion-title">
+                                <a href="#" class="discussion-link">Thermodynamics homework help needed</a>
+                                <span class="discussion-badge urgent">Urgent</span>
+                            </h3>
+                            <p class="discussion-excerpt">Stuck on a problem involving Carnot engines. The efficiency calculation doesn't match the expected answer. Can someone check my work?</p>
+                            <div class="discussion-meta">
+                                <span class="author">by <strong>Alex Turner</strong></span>
+                                <span class="category">in <a href="#" class="category-link">Problem Solving</a></span>
+                                <span class="timestamp">1 day ago</span>
+                                <div class="discussion-stats">
+                                    <span><i class="fas fa-thumbs-up" aria-hidden="true"></i> 6</span>
+                                    <span><i class="fas fa-reply" aria-hidden="true"></i> 3</span>
+                                    <span><i class="fas fa-eye" aria-hidden="true"></i> 45</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                
+                <div class="pagination">
+                    <button class="btn btn-outline" aria-label="Previous page">
+                        <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                        Previous
+                    </button>
+                    <div class="page-numbers">
+                        <button class="page-btn active" aria-current="page">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <span class="page-dots">...</span>
+                        <button class="page-btn">10</button>
+                    </div>
+                    <button class="btn btn-outline" aria-label="Next page">
+                        Next
+                        <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Sidebar -->
+            <aside class="forum-sidebar" aria-label="Forum sidebar">
+                <!-- Online Users -->
+                <div class="sidebar-widget">
+                    <h3>Users Online</h3>
+                    <div class="online-users">
+                        <div class="user-item">
+                            <img src="https://via.placeholder.com/30x30/3b82f6/ffffff?text=JD" alt="User avatar" class="user-avatar">
+                            <span class="username">John Doe</span>
+                            <span class="user-status online"></span>
+                        </div>
+                        <div class="user-item">
+                            <img src="https://via.placeholder.com/30x30/10b981/ffffff?text=JS" alt="User avatar" class="user-avatar">
+                            <span class="username">Jane Smith</span>
+                            <span class="user-status online"></span>
+                        </div>
+                        <div class="user-item">
+                            <img src="https://via.placeholder.com/30x30/f59e0b/ffffff?text=MB" alt="User avatar" class="user-avatar">
+                            <span class="username">Mike Brown</span>
+                            <span class="user-status online"></span>
+                        </div>
+                        <a href="#" class="view-all-link">View all online users (1,234)</a>
+                    </div>
+                </div>
+                
+                <!-- Community Guidelines -->
+                <div class="sidebar-widget">
+                    <h3>Community Guidelines</h3>
+                    <ul class="guidelines-list">
+                        <li><i class="fas fa-check" aria-hidden="true"></i> Be respectful and helpful</li>
+                        <li><i class="fas fa-check" aria-hidden="true"></i> Stay on topic</li>
+                        <li><i class="fas fa-check" aria-hidden="true"></i> Search before posting</li>
+                        <li><i class="fas fa-check" aria-hidden="true"></i> Provide context for questions</li>
+                        <li><i class="fas fa-check" aria-hidden="true"></i> Show your work for homework</li>
+                    </ul>
+                    <a href="#" class="full-guidelines-link">Read full guidelines</a>
+                </div>
+                
+                <!-- Recent Activity -->
+                <div class="sidebar-widget">
+                    <h3>Recent Activity</h3>
+                    <div class="activity-feed">
+                        <div class="activity-item">
+                            <i class="fas fa-reply activity-icon" aria-hidden="true"></i>
+                            <div class="activity-content">
+                                <span class="username">Prof. Wilson</span> replied to
+                                <a href="#" class="activity-link">Quantum mechanics basics</a>
+                                <span class="activity-time">5 min ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <i class="fas fa-thumbs-up activity-icon" aria-hidden="true"></i>
+                            <div class="activity-content">
+                                <span class="username">Alice Cooper</span> liked
+                                <a href="#" class="activity-link">Wave interference demo</a>
+                                <span class="activity-time">12 min ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <i class="fas fa-plus activity-icon" aria-hidden="true"></i>
+                            <div class="activity-content">
+                                <span class="username">Bob Johnson</span> started
+                                <a href="#" class="activity-link">Heat transfer problem</a>
+                                <span class="activity-time">23 min ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <a href="index.html" class="logo">
+                            <i class="fas fa-atom" aria-hidden="true"></i>
+                            PhysicsLearn
+                        </a>
+                        <p>Making physics accessible and engaging for learners worldwide.</p>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Learning</h3>
+                    <ul class="footer-links">
+                        <li><a href="simulations.html">Interactive Simulations</a></li>
+                        <li><a href="resources.html">Study Resources</a></li>
+                        <li><a href="forum.html">Community Forum</a></li>
+                        <li><a href="#">Practice Problems</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Community Guidelines</a></li>
+                        <li><a href="#">Report Issue</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <div class="social-links">
+                        <a href="#" aria-label="Follow us on Twitter" class="social-link">
+                            <i class="fab fa-twitter" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" aria-label="Join our Discord" class="social-link">
+                            <i class="fab fa-discord" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" aria-label="Follow us on YouTube" class="social-link">
+                            <i class="fab fa-youtube" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" aria-label="Connect on LinkedIn" class="social-link">
+                            <i class="fab fa-linkedin" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 PhysicsLearn. All rights reserved.</p>
+                <div class="footer-legal">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Accessibility</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/forum.js"></script>
+</body>
+</html>

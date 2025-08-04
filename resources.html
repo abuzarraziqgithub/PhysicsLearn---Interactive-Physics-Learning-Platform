@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educational Resources - PhysicsLearn</title>
+    <meta name="description" content="Comprehensive physics educational resources including structured courses, video lectures, notes, and problem sets for all learning levels">
+    
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/resources.css">
+    <link rel="stylesheet" href="css/enhanced-animations.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Enhanced Animation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lenis/1.0.19/lenis.min.js"></script>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="header" role="banner">
+        <nav class="navbar" role="navigation" aria-label="Main navigation">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <a href="index.html" class="logo" aria-label="PhysicsLearn Home">
+                        <i class="fas fa-atom" aria-hidden="true"></i>
+                        <span>PhysicsLearn</span>
+                    </a>
+                </div>
+                
+                <!-- Mobile menu toggle -->
+                <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                    <span class="hamburger"></span>
+                    <span class="hamburger"></span>
+                    <span class="hamburger"></span>
+                </button>
+                
+                <!-- Navigation Menu -->
+                <ul class="nav-menu" role="menubar">
+                    <li class="nav-item" role="none">
+                        <a href="index.html" class="nav-link" role="menuitem">Home</a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="simulations.html" class="nav-link" role="menuitem">Simulations</a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="resources.html" class="nav-link active" role="menuitem">Resources</a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="forum.html" class="nav-link" role="menuitem">Forum</a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="contact.html" class="nav-link" role="menuitem">Contact</a>
+                    </li>
+                    <li class="nav-item auth-buttons" role="none">
+                        <a href="login.html" class="btn btn-outline" role="menuitem">Login</a>
+                        <a href="register.html" class="btn btn-primary" role="menuitem">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main role="main" id="main-content">
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="container">
+                <div class="page-header-content">
+                    <h1 class="page-title">Educational Resources</h1>
+                    <p class="page-description">
+                        Comprehensive learning materials designed to support your physics education journey. 
+                        From beginner concepts to advanced topics, find structured courses, video lectures, 
+                        study notes, and practice problems.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resource Categories -->
+        <section class="resource-categories" aria-labelledby="categories-title">
+            <div class="container">
+                <h2 id="categories-title" class="section-title">Browse Resources</h2>
+                <div class="categories-grid">
+                    <button class="category-tab active" data-category="courses" aria-pressed="true">
+                        <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+                        <span>Courses</span>
+                    </button>
+                    <button class="category-tab" data-category="videos" aria-pressed="false">
+                        <i class="fas fa-play-circle" aria-hidden="true"></i>
+                        <span>Video Lectures</span>
+                    </button>
+                    <button class="category-tab" data-category="notes" aria-pressed="false">
+                        <i class="fas fa-file-alt" aria-hidden="true"></i>
+                        <span>Study Notes</span>
+                    </button>
+                    <button class="category-tab" data-category="problems" aria-pressed="false">
+                        <i class="fas fa-calculator" aria-hidden="true"></i>
+                        <span>Problem Sets</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resources Content -->
+        <section class="resources-content">
+            <div class="container">
+                <!-- Courses Tab -->
+                <div class="resource-tab-content active" id="courses-content">
+                    <div class="tab-header">
+                        <h2>Structured Physics Courses</h2>
+                        <p>Follow our carefully designed course sequences to build a solid foundation in physics.</p>
+                    </div>
+                    
+                    <div class="courses-grid">
+                        <!-- Mechanics Course -->
+                        <article class="course-card">
+                            <div class="course-image">
+                                <div class="course-icon">
+                                    <i class="fas fa-cog"></i>
+                                </div>
+                                <div class="course-level">Beginner</div>
+                            </div>
+                            
+                            <div class="course-content">
+                                <h3 class="course-title">Classical Mechanics</h3>
+                                <p class="course-description">
+                                    Master the fundamentals of motion, forces, energy, and momentum. 
+                                    Perfect for students beginning their physics journey.
+                                </p>
+                                
+                                <div class="course-stats">
+                                    <div class="stat">
+                                        <i class="fas fa-clock" aria-hidden="true"></i>
+                                        <span>12 weeks</span>
+                                    </div>
+                                    <div class="stat">
+                                        <i class="fas fa-video" aria-hidden="true"></i>
+                                        <span>24 lectures</span>
+                                    </div>
+                                    <div class="stat">
+                                        <i class="fas fa-users" aria-hidden="true"></i>
+                                        <span>2,543 students</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="course-topics">
+                                    <h4>Topics Covered:</h4>
+                                    <ul>
+                                        <li>Kinematics and Motion</li>
+                                        <li>Newton's Laws</li>
+                                        <li>Work and Energy</li>
+                                        <li>Conservation Laws</li>
+                                        <li>Rotational Motion</li>
+                                        <li>Oscillations</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="course-actions">
+                                <button class="btn btn-primary">Start Course</button>
+                                <button class="btn btn-outline">Preview</button>
+                            </div>
+                        </article>
+
+                        <!-- Electromagnetism Course -->
+                        <article class="course-card">
+                            <div class="course-image">
+                                <div class="course-icon">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <div class="course-level">Intermediate</div>
+                            </div>
+                            
+                            <div class="course-content">
+                                <h3 class="course-title">Electromagnetism</h3>
+                                <p class="course-description">
+                                    Explore electric and magnetic fields, electromagnetic induction, 
+                                    and Maxwell's equations in this comprehensive course.
+                                </p>
+                                
+                                <div class="course-stats">
+                                    <div class="stat">
+                                        <i class="fas fa-clock" aria-hidden="true"></i>
+                                        <span>16 weeks</span>
+                                    </div>
+                                    <div class="stat">
+                                        <i class="fas fa-video" aria-hidden="true"></i>
+                                        <span>32 lectures</span>
+                                    </div>
+                                    <div class="stat">
+                                        <i class="fas fa-users" aria-hidden="true"></i>
+                                        <span>1,876 students</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="course-topics">
+                                    <h4>Topics Covered:</h4>
+                                    <ul>
+                                        <li>Electric Fields and Potential</li>
+                                        <li>Capacitance and Dielectrics</li>
+                                        <li>Current and Resistance</li>
+                                        <li>Magnetic Fields</li>
+                                        <li>Electromagnetic Induction</li>
+                                        <li>AC Circuits</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="course-actions">
+                                <button class="btn btn-primary">Start Course</button>
+                                <button class="btn btn-outline">Preview</button>
+                            </div>
+                        </article>
+
+                        <!-- Quantum Physics Course -->
+                        <article class="course-card">
+                            <div class="course-image">
+                                <div class="course-icon">
+                                    <i class="fas fa-atom"></i>
+                                </div>
+                                <div class="course-level">Advanced</div>
+                            </div>
+                            
+                            <div class="course-content">
+                                <h3 class="course-title">Quantum Mechanics</h3>
+                                <p class="course-description">
+                                    Dive into the fascinating world of quantum physics, from wave-particle 
+                                    duality to the Schrödinger equation and beyond.
+                                </p>
+                                
+                                <div class="course-stats">
+                                    <div class="stat">
+                                        <i class="fas fa-clock" aria-hidden="true"></i>
+                                        <span>20 weeks</span>
+                                    </div>
+                                    <div class="stat">
+                                        <i class="fas fa-video" aria-hidden="true"></i>
+                                        <span>40 lectures</span>
+                                    </div>
+                                    <div class="stat">
+                                        <i class="fas fa-users" aria-hidden="true"></i>
+                                        <span>892 students</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="course-topics">
+                                    <h4>Topics Covered:</h4>
+                                    <ul>
+                                        <li>Wave-Particle Duality</li>
+                                        <li>Uncertainty Principle</li>
+                                        <li>Schrödinger Equation</li>
+                                        <li>Quantum Tunneling</li>
+                                        <li>Spin and Angular Momentum</li>
+                                        <li>Quantum Entanglement</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="course-actions">
+                                <button class="btn btn-primary">Start Course</button>
+                                <button class="btn btn-outline">Preview</button>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <!-- Videos Tab -->
+                <div class="resource-tab-content" id="videos-content">
+                    <div class="tab-header">
+                        <h2>Video Lectures Library</h2>
+                        <p>High-quality video content from expert physicists and educators.</p>
+                    </div>
+                    
+                    <div class="videos-grid">
+                        <article class="video-card">
+                            <div class="video-thumbnail">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <div class="video-duration">12:34</div>
+                            </div>
+                            
+                            <div class="video-content">
+                                <h3 class="video-title">Introduction to Newton's Laws</h3>
+                                <p class="video-instructor">Dr. Sarah Chen</p>
+                                <p class="video-description">
+                                    A comprehensive introduction to Newton's three laws of motion 
+                                    with real-world examples and demonstrations.
+                                </p>
+                                
+                                <div class="video-stats">
+                                    <span><i class="fas fa-eye"></i> 45,231 views</span>
+                                    <span><i class="fas fa-thumbs-up"></i> 1,205 likes</span>
+                                    <span><i class="fas fa-clock"></i> 2 days ago</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="video-card">
+                            <div class="video-thumbnail">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <div class="video-duration">18:22</div>
+                            </div>
+                            
+                            <div class="video-content">
+                                <h3 class="video-title">Wave Interference Explained</h3>
+                                <p class="video-instructor">Prof. Michael Rodriguez</p>
+                                <p class="video-description">
+                                    Understand constructive and destructive interference through 
+                                    visual demonstrations and mathematical analysis.
+                                </p>
+                                
+                                <div class="video-stats">
+                                    <span><i class="fas fa-eye"></i> 32,187 views</span>
+                                    <span><i class="fas fa-thumbs-up"></i> 987 likes</span>
+                                    <span><i class="fas fa-clock"></i> 1 week ago</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="video-card">
+                            <div class="video-thumbnail">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <div class="video-duration">25:15</div>
+                            </div>
+                            
+                            <div class="video-content">
+                                <h3 class="video-title">Quantum Superposition Demystified</h3>
+                                <p class="video-instructor">Dr. Lisa Park</p>
+                                <p class="video-description">
+                                    Explore one of quantum mechanics' most intriguing concepts 
+                                    with clear explanations and thought experiments.
+                                </p>
+                                
+                                <div class="video-stats">
+                                    <span><i class="fas fa-eye"></i> 28,905 views</span>
+                                    <span><i class="fas fa-thumbs-up"></i> 1,432 likes</span>
+                                    <span><i class="fas fa-clock"></i> 3 days ago</span>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <!-- Notes Tab -->
+                <div class="resource-tab-content" id="notes-content">
+                    <div class="tab-header">
+                        <h2>Study Notes & References</h2>
+                        <p>Downloadable study materials, formula sheets, and reference guides.</p>
+                    </div>
+                    
+                    <div class="notes-grid">
+                        <article class="note-card">
+                            <div class="note-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            
+                            <div class="note-content">
+                                <h3 class="note-title">Mechanics Formula Sheet</h3>
+                                <p class="note-description">
+                                    Complete collection of kinematic equations, force formulas, 
+                                    and energy relationships for classical mechanics.
+                                </p>
+                                
+                                <div class="note-meta">
+                                    <span class="note-type">PDF</span>
+                                    <span class="note-size">2.3 MB</span>
+                                    <span class="note-pages">12 pages</span>
+                                </div>
+                            </div>
+                            
+                            <div class="note-actions">
+                                <button class="btn btn-primary">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                                <button class="btn btn-outline">
+                                    <i class="fas fa-eye"></i> Preview
+                                </button>
+                            </div>
+                        </article>
+
+                        <article class="note-card">
+                            <div class="note-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            
+                            <div class="note-content">
+                                <h3 class="note-title">Electromagnetic Field Theory Notes</h3>
+                                <p class="note-description">
+                                    Comprehensive study notes covering electric fields, magnetic fields, 
+                                    and Maxwell's equations with worked examples.
+                                </p>
+                                
+                                <div class="note-meta">
+                                    <span class="note-type">PDF</span>
+                                    <span class="note-size">8.7 MB</span>
+                                    <span class="note-pages">45 pages</span>
+                                </div>
+                            </div>
+                            
+                            <div class="note-actions">
+                                <button class="btn btn-primary">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                                <button class="btn btn-outline">
+                                    <i class="fas fa-eye"></i> Preview
+                                </button>
+                            </div>
+                        </article>
+
+                        <article class="note-card">
+                            <div class="note-icon">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            
+                            <div class="note-content">
+                                <h3 class="note-title">Physics Constants Reference</h3>
+                                <p class="note-description">
+                                    Essential physical constants, unit conversions, and mathematical 
+                                    formulas used throughout physics courses.
+                                </p>
+                                
+                                <div class="note-meta">
+                                    <span class="note-type">PDF</span>
+                                    <span class="note-size">1.1 MB</span>
+                                    <span class="note-pages">6 pages</span>
+                                </div>
+                            </div>
+                            
+                            <div class="note-actions">
+                                <button class="btn btn-primary">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                                <button class="btn btn-outline">
+                                    <i class="fas fa-eye"></i> Preview
+                                </button>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <!-- Problems Tab -->
+                <div class="resource-tab-content" id="problems-content">
+                    <div class="tab-header">
+                        <h2>Practice Problem Sets</h2>
+                        <p>Challenge yourself with our curated collection of physics problems and solutions.</p>
+                    </div>
+                    
+                    <div class="problems-grid">
+                        <article class="problem-set-card">
+                            <div class="problem-header">
+                                <h3 class="problem-title">Kinematics Problem Set</h3>
+                                <div class="problem-difficulty">
+                                    <span class="difficulty-label">Difficulty:</span>
+                                    <div class="difficulty-stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="problem-content">
+                                <p class="problem-description">
+                                    Practice problems covering one-dimensional and two-dimensional motion, 
+                                    including projectile motion and circular motion scenarios.
+                                </p>
+                                
+                                <div class="problem-stats">
+                                    <div class="stat">
+                                        <i class="fas fa-question-circle"></i>
+                                        <span>15 problems</span>
+                                    </div>
+                                    <div class="stat">
+                                        <i class="fas fa-clock"></i>
+                                        <span>2-3 hours</span>
+                                    </div>
+                                    <div class="stat">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Solutions included</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="problem-topics">
+                                    <span class="topic-tag">Velocity</span>
+                                    <span class="topic-tag">Acceleration</span>
+                                    <span class="topic-tag">Projectile Motion</span>
+                                    <span class="topic-tag">Circular Motion</span>
+                                </div>
+                            </div>
+                            
+                            <div class="problem-actions">
+                                <button class="btn btn-primary">Start Problems</button>
+                                <button class="btn btn-outline">View Solutions</button>
+                            </div>
+                        </article>
+
+                        <article class="problem-set-card">
+                            <div class="problem-header">
+                                <h3 class="problem-title">Energy and Momentum</h3>
+                                <div class="problem-difficulty">
+                                    <span class="difficulty-label">Difficulty:</span>
+                                    <div class="difficulty-stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="problem-content">
+                                <p class="problem-description">
+                                    Advanced problems involving conservation of energy and momentum, 
+                                    including elastic and inelastic collisions.
+                                </p>
+                                
+                                <div class="problem-stats">
+                                    <div class="stat">
+                                        <i class="fas fa-question-circle"></i>
+                                        <span>12 problems</span>
+                                    </div>
+                                    <div class="stat">
+                                        <i class="fas fa-clock"></i>
+                                        <span>3-4 hours</span>
+                                    </div>
+                                    <div class="stat">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Solutions included</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="problem-topics">
+                                    <span class="topic-tag">Kinetic Energy</span>
+                                    <span class="topic-tag">Potential Energy</span>
+                                    <span class="topic-tag">Conservation Laws</span>
+                                    <span class="topic-tag">Collisions</span>
+                                </div>
+                            </div>
+                            
+                            <div class="problem-actions">
+                                <button class="btn btn-primary">Start Problems</button>
+                                <button class="btn btn-outline">View Solutions</button>
+                            </div>
+                        </article>
+
+                        <article class="problem-set-card">
+                            <div class="problem-header">
+                                <h3 class="problem-title">Electromagnetic Induction</h3>
+                                <div class="problem-difficulty">
+                                    <span class="difficulty-label">Difficulty:</span>
+                                    <div class="difficulty-stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="problem-content">
+                                <p class="problem-description">
+                                    Challenging problems on Faraday's law, Lenz's law, and applications 
+                                    of electromagnetic induction in real-world scenarios.
+                                </p>
+                                
+                                <div class="problem-stats">
+                                    <div class="stat">
+                                        <i class="fas fa-question-circle"></i>
+                                        <span>10 problems</span>
+                                    </div>
+                                    <div class="stat">
+                                        <i class="fas fa-clock"></i>
+                                        <span>4-5 hours</span>
+                                    </div>
+                                    <div class="stat">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Solutions included</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="problem-topics">
+                                    <span class="topic-tag">Faraday's Law</span>
+                                    <span class="topic-tag">Lenz's Law</span>
+                                    <span class="topic-tag">Inductance</span>
+                                    <span class="topic-tag">AC Circuits</span>
+                                </div>
+                            </div>
+                            
+                            <div class="problem-actions">
+                                <button class="btn btn-primary">Start Problems</button>
+                                <button class="btn btn-outline">View Solutions</button>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Study Tips -->
+        <section class="study-tips" aria-labelledby="tips-title">
+            <div class="container">
+                <h2 id="tips-title" class="section-title">Study Tips for Success</h2>
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3>Start with Concepts</h3>
+                        <p>Always understand the underlying physics concepts before diving into complex calculations.</p>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-pencil-alt"></i>
+                        </div>
+                        <h3>Practice Regularly</h3>
+                        <p>Solve problems daily to reinforce your understanding and build problem-solving skills.</p>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Study Groups</h3>
+                        <p>Join our community forum to discuss concepts and learn from fellow students.</p>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Track Progress</h3>
+                        <p>Use our progress tracking tools to monitor your learning journey and identify areas for improvement.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <a href="index.html" class="logo">
+                            <i class="fas fa-atom" aria-hidden="true"></i>
+                            <span>PhysicsLearn</span>
+                        </a>
+                        <p>Making physics accessible through interactive learning.</p>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Platform</h3>
+                    <ul class="footer-links">
+                        <li><a href="simulations.html">Simulations</a></li>
+                        <li><a href="resources.html">Resources</a></li>
+                        <li><a href="forum.html">Community Forum</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook" class="social-link">
+                            <i class="fab fa-facebook" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" aria-label="Twitter" class="social-link">
+                            <i class="fab fa-twitter" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" aria-label="LinkedIn" class="social-link">
+                            <i class="fab fa-linkedin" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" aria-label="YouTube" class="social-link">
+                            <i class="fab fa-youtube" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 PhysicsLearn. Created by <a href="https://github.com/abuzarraziqgithub" target="_blank" rel="noopener noreferrer" class="creator-link">Abuzar RaziQ</a>. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="js/main.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/resources.js"></script>
+    <script src="js/smooth-scroll.js"></script>
+</body>
+</html>

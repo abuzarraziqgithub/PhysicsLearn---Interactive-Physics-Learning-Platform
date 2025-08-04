@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - PhysicsLearn</title>
+    <meta name="description" content="Join PhysicsLearn to access interactive simulations, educational resources, and connect with the physics learning community.">
+    <meta name="keywords" content="physics registration, physics education, interactive learning, physics community">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Create Account - PhysicsLearn">
+    <meta property="og:description" content="Join our physics learning community and access interactive simulations and educational resources.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://physicslearn.com/register">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/auth.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body class="auth-page">
+    <!-- Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="index.html" class="logo" aria-label="PhysicsLearn Home">
+                    <i class="fas fa-atom" aria-hidden="true"></i>
+                    PhysicsLearn
+                </a>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link" role="menuitem">Home</a>
+                <a href="simulations.html" class="nav-link" role="menuitem">Simulations</a>
+                <a href="resources.html" class="nav-link" role="menuitem">Resources</a>
+                <a href="forum.html" class="nav-link" role="menuitem">Forum</a>
+                <a href="contact.html" class="nav-link" role="menuitem">Contact</a>
+                <a href="login.html" class="btn btn-outline" role="menuitem">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="auth-main">
+        <div class="auth-container">
+            <!-- Registration Form -->
+            <div class="auth-card">
+                <div class="auth-header">
+                    <div class="auth-logo">
+                        <i class="fas fa-atom" aria-hidden="true"></i>
+                    </div>
+                    <h1>Create Your Account</h1>
+                    <p class="auth-subtitle">Join our physics learning community and unlock your potential</p>
+                </div>
+                
+                <form class="auth-form" id="register-form" novalidate>
+                    <!-- Progress Indicator -->
+                    <div class="form-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <div class="progress-steps">
+                            <div class="step active" data-step="1">
+                                <span class="step-number">1</span>
+                                <span class="step-label">Personal Info</span>
+                            </div>
+                            <div class="step" data-step="2">
+                                <span class="step-number">2</span>
+                                <span class="step-label">Account Details</span>
+                            </div>
+                            <div class="step" data-step="3">
+                                <span class="step-number">3</span>
+                                <span class="step-label">Preferences</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 1: Personal Information -->
+                    <div class="form-step active" id="step-1">
+                        <h2 class="step-title">Personal Information</h2>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="first-name">First Name</label>
+                                <input type="text" id="first-name" name="firstName" required 
+                                       aria-describedby="first-name-error" autocomplete="given-name">
+                                <div class="error-message" id="first-name-error" role="alert"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="last-name">Last Name</label>
+                                <input type="text" id="last-name" name="lastName" required 
+                                       aria-describedby="last-name-error" autocomplete="family-name">
+                                <div class="error-message" id="last-name-error" role="alert"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required 
+                                   aria-describedby="email-error email-hint" autocomplete="email">
+                            <div class="input-hint" id="email-hint">We'll use this to send you important updates</div>
+                            <div class="error-message" id="email-error" role="alert"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="birth-date">Date of Birth</label>
+                            <input type="date" id="birth-date" name="birthDate" required 
+                                   aria-describedby="birth-date-error" autocomplete="bday">
+                            <div class="error-message" id="birth-date-error" role="alert"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <select id="country" name="country" required aria-describedby="country-error">
+                                <option value="">Select your country</option>
+                                <option value="US">United States</option>
+                                <option value="CA">Canada</option>
+                                <option value="GB">United Kingdom</option>
+                                <option value="AU">Australia</option>
+                                <option value="DE">Germany</option>
+                                <option value="FR">France</option>
+                                <option value="IN">India</option>
+                                <option value="JP">Japan</option>
+                                <option value="CN">China</option>
+                                <option value="BR">Brazil</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <div class="error-message" id="country-error" role="alert"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 2: Account Details -->
+                    <div class="form-step" id="step-2">
+                        <h2 class="step-title">Account Details</h2>
+                        
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" required 
+                                   aria-describedby="username-error username-hint" autocomplete="username">
+                            <div class="input-hint" id="username-hint">This will be your display name in the community</div>
+                            <div class="error-message" id="username-error" role="alert"></div>
+                            <div class="input-feedback" id="username-feedback"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <div class="password-input">
+                                <input type="password" id="password" name="password" required 
+                                       aria-describedby="password-error password-strength" autocomplete="new-password">
+                                <button type="button" class="password-toggle" aria-label="Show password">
+                                    <i class="fas fa-eye" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="password-strength" id="password-strength">
+                                <div class="strength-bar">
+                                    <div class="strength-fill"></div>
+                                </div>
+                                <div class="strength-text">Password strength: <span class="strength-level">Weak</span></div>
+                            </div>
+                            <div class="error-message" id="password-error" role="alert"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirm-password">Confirm Password</label>
+                            <div class="password-input">
+                                <input type="password" id="confirm-password" name="confirmPassword" required 
+                                       aria-describedby="confirm-password-error" autocomplete="new-password">
+                                <button type="button" class="password-toggle" aria-label="Show password">
+                                    <i class="fas fa-eye" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="error-message" id="confirm-password-error" role="alert"></div>
+                        </div>
+                        
+                        <div class="password-requirements">
+                            <h3>Password Requirements:</h3>
+                            <ul class="requirements-list">
+                                <li data-requirement="length" class="requirement">
+                                    <i class="fas fa-times" aria-hidden="true"></i>
+                                    At least 8 characters long
+                                </li>
+                                <li data-requirement="uppercase" class="requirement">
+                                    <i class="fas fa-times" aria-hidden="true"></i>
+                                    Contains uppercase letter
+                                </li>
+                                <li data-requirement="lowercase" class="requirement">
+                                    <i class="fas fa-times" aria-hidden="true"></i>
+                                    Contains lowercase letter
+                                </li>
+                                <li data-requirement="number" class="requirement">
+                                    <i class="fas fa-times" aria-hidden="true"></i>
+                                    Contains number
+                                </li>
+                                <li data-requirement="special" class="requirement">
+                                    <i class="fas fa-times" aria-hidden="true"></i>
+                                    Contains special character
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 3: Preferences -->
+                    <div class="form-step" id="step-3">
+                        <h2 class="step-title">Learning Preferences</h2>
+                        
+                        <div class="form-group">
+                            <label for="education-level">Education Level</label>
+                            <select id="education-level" name="educationLevel" required>
+                                <option value="">Select your level</option>
+                                <option value="high-school">High School</option>
+                                <option value="undergraduate">Undergraduate</option>
+                                <option value="graduate">Graduate</option>
+                                <option value="postgraduate">Postgraduate</option>
+                                <option value="professional">Professional</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="role">I am a:</label>
+                            <select id="role" name="role" required>
+                                <option value="">Select your role</option>
+                                <option value="student">Student</option>
+                                <option value="teacher">Teacher/Educator</option>
+                                <option value="researcher">Researcher</option>
+                                <option value="professional">Industry Professional</option>
+                                <option value="hobbyist">Physics Enthusiast</option>
+                                <option value="parent">Parent/Guardian</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <fieldset class="form-group">
+                            <legend>Areas of Interest (select all that apply):</legend>
+                            <div class="checkbox-grid">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="interests" value="classical-mechanics">
+                                    Classical Mechanics
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="interests" value="quantum-physics">
+                                    Quantum Physics
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="interests" value="electromagnetism">
+                                    Electromagnetism
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="interests" value="thermodynamics">
+                                    Thermodynamics
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="interests" value="waves-oscillations">
+                                    Waves & Oscillations
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="interests" value="astrophysics">
+                                    Astrophysics
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="interests" value="particle-physics">
+                                    Particle Physics
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="interests" value="biophysics">
+                                    Biophysics
+                                </label>
+                            </div>
+                        </fieldset>
+                        
+                        <fieldset class="form-group">
+                            <legend>Communication Preferences:</legend>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="notifications" value="email-updates" checked>
+                                Receive email updates about new features and content
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="notifications" value="community-digest" checked>
+                                Weekly community digest
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="notifications" value="course-recommendations">
+                                Personalized course recommendations
+                            </label>
+                        </fieldset>
+                    </div>
+                    
+                    <!-- Terms and Privacy -->
+                    <div class="form-group terms-section">
+                        <label class="checkbox-label required">
+                            <input type="checkbox" name="terms" required aria-describedby="terms-error">
+                            I agree to the <a href="#" target="_blank" rel="noopener">Terms of Service</a> 
+                            and <a href="#" target="_blank" rel="noopener">Privacy Policy</a>
+                        </label>
+                        <div class="error-message" id="terms-error" role="alert"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="newsletter">
+                            Subscribe to our newsletter for physics news and updates
+                        </label>
+                    </div>
+                    
+                    <!-- Form Navigation -->
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-outline" id="prev-btn" disabled>
+                            <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                            Previous
+                        </button>
+                        
+                        <button type="button" class="btn btn-primary" id="next-btn">
+                            Next
+                            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                        </button>
+                        
+                        <button type="submit" class="btn btn-primary" id="submit-btn" style="display: none;">
+                            <i class="fas fa-user-plus" aria-hidden="true"></i>
+                            Create Account
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- Social Registration -->
+                <div class="auth-divider">
+                    <span>Or continue with</span>
+                </div>
+                
+                <div class="social-auth">
+                    <button class="social-btn google-btn" aria-label="Continue with Google">
+                        <i class="fab fa-google" aria-hidden="true"></i>
+                        Google
+                    </button>
+                    <button class="social-btn github-btn" aria-label="Continue with GitHub">
+                        <i class="fab fa-github" aria-hidden="true"></i>
+                        GitHub
+                    </button>
+                    <button class="social-btn microsoft-btn" aria-label="Continue with Microsoft">
+                        <i class="fab fa-microsoft" aria-hidden="true"></i>
+                        Microsoft
+                    </button>
+                </div>
+                
+                <!-- Login Link -->
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="login.html" class="auth-link">Sign in here</a></p>
+                </div>
+            </div>
+            
+            <!-- Information Panel -->
+            <div class="auth-info">
+                <div class="info-content">
+                    <h2>Join the Physics Community</h2>
+                    <div class="benefits-list">
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-flask" aria-hidden="true"></i>
+                            </div>
+                            <div class="benefit-content">
+                                <h3>Interactive Simulations</h3>
+                                <p>Explore physics concepts through hands-on interactive simulations and visualizations.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-users" aria-hidden="true"></i>
+                            </div>
+                            <div class="benefit-content">
+                                <h3>Community Support</h3>
+                                <p>Connect with students, educators, and experts. Get help and share knowledge.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+                            </div>
+                            <div class="benefit-content">
+                                <h3>Structured Learning</h3>
+                                <p>Access curated courses, study materials, and practice problems tailored to your level.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-chart-line" aria-hidden="true"></i>
+                            </div>
+                            <div class="benefit-content">
+                                <h3>Track Progress</h3>
+                                <p>Monitor your learning journey with detailed progress tracking and achievements.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial">
+                        <blockquote>
+                            "PhysicsLearn transformed how I understand complex physics concepts. The interactive simulations make learning engaging and intuitive."
+                        </blockquote>
+                        <cite>
+                            <img src="https://via.placeholder.com/40x40/3b82f6/ffffff?text=AS" alt="Student avatar" class="testimonial-avatar">
+                            <div class="testimonial-author">
+                                <strong>Alex Students</strong>
+                                <span>Physics Major, MIT</span>
+                            </div>
+                        </cite>
+                    </div>
+                    
+                    <div class="trust-indicators">
+                        <div class="trust-item">
+                            <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                            <span>Secure & Private</span>
+                        </div>
+                        <div class="trust-item">
+                            <i class="fas fa-lock" aria-hidden="true"></i>
+                            <span>Data Protected</span>
+                        </div>
+                        <div class="trust-item">
+                            <i class="fas fa-certificate" aria-hidden="true"></i>
+                            <span>Trusted by Educators</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Success Modal -->
+    <div class="modal" id="success-modal" role="dialog" aria-labelledby="success-title" aria-hidden="true">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle" aria-hidden="true"></i>
+                </div>
+                <h2 id="success-title">Welcome to PhysicsLearn!</h2>
+            </div>
+            <div class="modal-body">
+                <p>Your account has been created successfully. We've sent a verification email to <span id="user-email"></span>.</p>
+                <p>Please check your email and click the verification link to activate your account.</p>
+                
+                <div class="next-steps">
+                    <h3>What's Next?</h3>
+                    <ul>
+                        <li><i class="fas fa-envelope" aria-hidden="true"></i> Verify your email address</li>
+                        <li><i class="fas fa-user-edit" aria-hidden="true"></i> Complete your profile</li>
+                        <li><i class="fas fa-play" aria-hidden="true"></i> Start exploring simulations</li>
+                        <li><i class="fas fa-users" aria-hidden="true"></i> Join community discussions</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="continue-btn">Continue to PhysicsLearn</button>
+                <button class="btn btn-outline" id="resend-email-btn">Resend Verification Email</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

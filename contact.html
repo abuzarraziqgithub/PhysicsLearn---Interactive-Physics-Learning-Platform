@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - PhysicsLearn</title>
+    <meta name="description" content="Get in touch with the PhysicsLearn team. Send us your questions, feedback, or suggestions">
+    
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/contact.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="index.html" class="logo" aria-label="PhysicsLearn Home">
+                    <i class="fas fa-atom" aria-hidden="true"></i>
+                    PhysicsLearn
+                </a>
+            </div>
+            
+            <!-- Mobile menu toggle -->
+            <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <!-- Navigation Menu -->
+            <div class="nav-menu" role="menubar">
+                <a href="index.html" class="nav-link" role="menuitem">Home</a>
+                <a href="simulations.html" class="nav-link" role="menuitem">Simulations</a>
+                <a href="resources.html" class="nav-link" role="menuitem">Resources</a>
+                <a href="forum.html" class="nav-link" role="menuitem">Forum</a>
+                <a href="contact.html" class="nav-link active" role="menuitem" aria-current="page">Contact</a>
+                <a href="login.html" class="btn btn-outline" role="menuitem">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main role="main" id="main-content">
+        <!-- Page Header -->
+        <header class="page-header">
+            <div class="container">
+                <div class="page-header-content">
+                    <h1 class="page-title">Contact Us</h1>
+                    <p class="page-description">
+                        Have questions, feedback, or suggestions? We'd love to hear from you. 
+                        Get in touch with our team and we'll respond as soon as possible.
+                    </p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Contact Content -->
+        <section class="contact-section">
+            <div class="container">
+                <div class="contact-grid">
+                    <!-- Contact Form -->
+                    <div class="contact-form-container">
+                        <div class="form-header">
+                            <h2>Send us a Message</h2>
+                            <p>Fill out the form below and we'll get back to you within 24 hours.</p>
+                        </div>
+
+                        <form class="contact-form" id="contact-form" novalidate>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="firstName" class="form-label">First Name *</label>
+                                    <input 
+                                        type="text" 
+                                        id="firstName" 
+                                        name="firstName" 
+                                        class="form-input" 
+                                        required
+                                        autocomplete="given-name"
+                                        aria-describedby="firstName-error"
+                                    >
+                                    <div class="error-message" id="firstName-error" role="alert"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="lastName" class="form-label">Last Name *</label>
+                                    <input 
+                                        type="text" 
+                                        id="lastName" 
+                                        name="lastName" 
+                                        class="form-input" 
+                                        required
+                                        autocomplete="family-name"
+                                        aria-describedby="lastName-error"
+                                    >
+                                    <div class="error-message" id="lastName-error" role="alert"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email Address *</label>
+                                <input 
+                                    type="email" 
+                                    id="email" 
+                                    name="email" 
+                                    class="form-input" 
+                                    required
+                                    autocomplete="email"
+                                    aria-describedby="email-error"
+                                >
+                                <div class="error-message" id="email-error" role="alert"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="subject" class="form-label">Subject *</label>
+                                <select 
+                                    id="subject" 
+                                    name="subject" 
+                                    class="form-select" 
+                                    required
+                                    aria-describedby="subject-error"
+                                >
+                                    <option value="">Select a topic</option>
+                                    <option value="general">General Inquiry</option>
+                                    <option value="technical">Technical Support</option>
+                                    <option value="content">Content Suggestion</option>
+                                    <option value="bug">Bug Report</option>
+                                    <option value="partnership">Partnership</option>
+                                    <option value="feedback">Feedback</option>
+                                </select>
+                                <div class="error-message" id="subject-error" role="alert"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="message" class="form-label">Message *</label>
+                                <textarea 
+                                    id="message" 
+                                    name="message" 
+                                    rows="6" 
+                                    class="form-textarea" 
+                                    placeholder="Tell us more about your inquiry..."
+                                    required
+                                    aria-describedby="message-error"
+                                ></textarea>
+                                <div class="error-message" id="message-error" role="alert"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="newsletter" name="newsletter">
+                                    <span class="checkbox-custom"></span>
+                                    I'd like to receive updates about new features and resources
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-large">
+                                <span class="button-text">Send Message</span>
+                                <i class="fas fa-spinner fa-spin button-loading" style="display: none;" aria-hidden="true"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="contact-info">
+                        <div class="contact-card">
+                            <h3>Get in Touch</h3>
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h4>Email</h4>
+                                    <p><a href="mailto:support@physicslearn.com">support@physicslearn.com</a></p>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h4>Phone</h4>
+                                    <p><a href="tel:+1-555-123-4567">+1 (555) 123-4567</a></p>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h4>Address</h4>
+                                    <p>123 Physics Street<br>Science City, SC 12345<br>United States</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h4>Support Hours</h4>
+                                    <p>Monday - Friday: 9:00 AM - 6:00 PM (EST)<br>
+                                       Saturday: 10:00 AM - 4:00 PM (EST)<br>
+                                       Sunday: Closed</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Section -->
+                        <div class="faq-section">
+                            <h3>Frequently Asked Questions</h3>
+                            <div class="faq-list">
+                                <details class="faq-item">
+                                    <summary>How do I reset my password?</summary>
+                                    <p>Click on "Forgot password?" on the login page and follow the instructions sent to your email.</p>
+                                </details>
+
+                                <details class="faq-item">
+                                    <summary>Are the simulations free to use?</summary>
+                                    <p>Yes! All our basic simulations are free. Premium features require a subscription.</p>
+                                </details>
+
+                                <details class="faq-item">
+                                    <summary>Can I download the study materials?</summary>
+                                    <p>Registered users can download PDF study materials and problem sets for offline study.</p>
+                                </details>
+
+                                <details class="faq-item">
+                                    <summary>How do I report a technical issue?</summary>
+                                    <p>Use the contact form above and select "Technical Support" or email us directly at support@physicslearn.com.</p>
+                                </details>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Response Time Info -->
+        <section class="response-info">
+            <div class="container">
+                <div class="response-card">
+                    <div class="response-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="response-content">
+                        <h3>Quick Response Times</h3>
+                        <p>We pride ourselves on fast, helpful responses. Here's what you can expect:</p>
+                        <ul>
+                            <li><strong>General Inquiries:</strong> Within 24 hours</li>
+                            <li><strong>Technical Support:</strong> Within 12 hours</li>
+                            <li><strong>Bug Reports:</strong> Within 6 hours</li>
+                            <li><strong>Urgent Issues:</strong> Within 2 hours</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <a href="index.html" class="logo">
+                            <i class="fas fa-atom" aria-hidden="true"></i>
+                            <span>PhysicsLearn</span>
+                        </a>
+                        <p>Making physics accessible through interactive learning.</p>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Platform</h3>
+                    <ul class="footer-links">
+                        <li><a href="simulations.html">Simulations</a></li>
+                        <li><a href="resources.html">Resources</a></li>
+                        <li><a href="forum.html">Community Forum</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook" class="social-link">
+                            <i class="fab fa-facebook" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" aria-label="Twitter" class="social-link">
+                            <i class="fab fa-twitter" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" aria-label="LinkedIn" class="social-link">
+                            <i class="fab fa-linkedin" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" aria-label="YouTube" class="social-link">
+                            <i class="fab fa-youtube" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 PhysicsLearn. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="js/main.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/contact.js"></script>
+</body>
+</html>

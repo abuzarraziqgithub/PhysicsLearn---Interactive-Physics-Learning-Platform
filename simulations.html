@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Simulations - PhysicsLearn</title>
+    <meta name="description" content="Explore physics concepts through interactive simulations including pendulum motion, wave interference, and gravitational fields">
+    
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/simulations.css">
+    <link rel="stylesheet" href="css/enhanced-animations.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Enhanced Animation & 3D Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="header" role="banner">
+        <nav class="navbar" role="navigation" aria-label="Main navigation">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <a href="index.html" class="logo" aria-label="PhysicsLearn Home">
+                        <i class="fas fa-atom" aria-hidden="true"></i>
+                        <span>PhysicsLearn</span>
+                    </a>
+                </div>
+                
+                <!-- Mobile menu toggle -->
+                <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                    <span class="hamburger"></span>
+                    <span class="hamburger"></span>
+                    <span class="hamburger"></span>
+                </button>
+                
+                <!-- Navigation Menu -->
+                <ul class="nav-menu" role="menubar">
+                    <li class="nav-item" role="none">
+                        <a href="index.html" class="nav-link" role="menuitem">Home</a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="simulations.html" class="nav-link active" role="menuitem">Simulations</a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="resources.html" class="nav-link" role="menuitem">Resources</a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="forum.html" class="nav-link" role="menuitem">Forum</a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="contact.html" class="nav-link" role="menuitem">Contact</a>
+                    </li>
+                    <li class="nav-item auth-buttons" role="none">
+                        <a href="login.html" class="btn btn-outline" role="menuitem">Login</a>
+                        <a href="register.html" class="btn btn-primary" role="menuitem">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main role="main" id="main-content">
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="container">
+                <div class="page-header-content">
+                    <h1 class="page-title">Interactive Physics Simulations</h1>
+                    <p class="page-description">
+                        Explore fundamental physics concepts through hands-on interactive simulations. 
+                        Each simulation comes with adjustable parameters and detailed explanations to 
+                        enhance your understanding.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Simulation Categories -->
+        <section class="simulation-categories" aria-labelledby="categories-title">
+            <div class="container">
+                <h2 id="categories-title" class="section-title">Browse by Category</h2>
+                <div class="categories-grid">
+                    <button class="category-filter active" data-category="all" aria-pressed="true">
+                        <i class="fas fa-th" aria-hidden="true"></i>
+                        All Simulations
+                    </button>
+                    <button class="category-filter" data-category="mechanics" aria-pressed="false">
+                        <i class="fas fa-cog" aria-hidden="true"></i>
+                        Mechanics
+                    </button>
+                    <button class="category-filter" data-category="waves" aria-pressed="false">
+                        <i class="fas fa-water" aria-hidden="true"></i>
+                        Waves & Sound
+                    </button>
+                    <button class="category-filter" data-category="electromagnetism" aria-pressed="false">
+                        <i class="fas fa-bolt" aria-hidden="true"></i>
+                        Electromagnetism
+                    </button>
+                    <button class="category-filter" data-category="thermodynamics" aria-pressed="false">
+                        <i class="fas fa-thermometer-half" aria-hidden="true"></i>
+                        Thermodynamics
+                    </button>
+                    <button class="category-filter" data-category="quantum" aria-pressed="false">
+                        <i class="fas fa-atom" aria-hidden="true"></i>
+                        Quantum Physics
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Simulations Grid -->
+        <section class="simulations-showcase" aria-labelledby="simulations-title">
+            <div class="container">
+                <h2 id="simulations-title" class="sr-only">Physics Simulations</h2>
+                
+                <div class="simulations-grid" id="simulations-grid">
+                    <!-- Simple Pendulum -->
+                    <article class="simulation-card" data-category="mechanics" id="pendulum">
+                        <div class="simulation-header">
+                            <h3 class="simulation-title">Simple Pendulum</h3>
+                            <div class="simulation-badges">
+                                <span class="badge badge-beginner">Beginner</span>
+                                <span class="badge badge-mechanics">Mechanics</span>
+                            </div>
+                        </div>
+                        
+                        <div class="simulation-canvas-container">
+                            <div id="pendulum-simulation" class="simulation-canvas" role="application" 
+                                 aria-label="Interactive pendulum simulation">
+                                <div class="canvas-loading">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    <p>Loading simulation...</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="simulation-controls">
+                            <div class="control-group">
+                                <label for="pendulum-length">Length (m)</label>
+                                <input type="range" id="pendulum-length" min="0.5" max="3" step="0.1" value="1.5"
+                                       aria-describedby="pendulum-length-value">
+                                <span id="pendulum-length-value" class="control-value">1.5</span>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="pendulum-angle">Initial Angle (°)</label>
+                                <input type="range" id="pendulum-angle" min="5" max="60" step="5" value="30"
+                                       aria-describedby="pendulum-angle-value">
+                                <span id="pendulum-angle-value" class="control-value">30</span>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="pendulum-gravity">Gravity (m/s²)</label>
+                                <input type="range" id="pendulum-gravity" min="1" max="20" step="0.5" value="9.8"
+                                       aria-describedby="pendulum-gravity-value">
+                                <span id="pendulum-gravity-value" class="control-value">9.8</span>
+                            </div>
+                            
+                            <div class="control-buttons">
+                                <button class="btn btn-primary" id="pendulum-start">
+                                    <i class="fas fa-play"></i> Start
+                                </button>
+                                <button class="btn btn-secondary" id="pendulum-pause">
+                                    <i class="fas fa-pause"></i> Pause
+                                </button>
+                                <button class="btn btn-outline" id="pendulum-reset">
+                                    <i class="fas fa-redo"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="simulation-info">
+                            <h4>About This Simulation</h4>
+                            <p>
+                                Explore the motion of a simple pendulum and discover how length, initial angle, 
+                                and gravity affect the period of oscillation. Observe energy conservation as 
+                                potential energy converts to kinetic energy and back.
+                            </p>
+                            <details class="simulation-details">
+                                <summary>Learning Objectives</summary>
+                                <ul>
+                                    <li>Understand periodic motion and oscillations</li>
+                                    <li>Explore the relationship between pendulum length and period</li>
+                                    <li>Observe energy conservation in mechanical systems</li>
+                                    <li>Analyze the effect of gravity on oscillatory motion</li>
+                                </ul>
+                            </details>
+                        </div>
+                    </article>
+
+                    <!-- Wave Interference -->
+                    <article class="simulation-card" data-category="waves" id="waves">
+                        <div class="simulation-header">
+                            <h3 class="simulation-title">Wave Interference</h3>
+                            <div class="simulation-badges">
+                                <span class="badge badge-intermediate">Intermediate</span>
+                                <span class="badge badge-waves">Waves</span>
+                            </div>
+                        </div>
+                        
+                        <div class="simulation-canvas-container">
+                            <div id="wave-simulation" class="simulation-canvas" role="application"
+                                 aria-label="Interactive wave interference simulation">
+                                <div class="canvas-loading">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    <p>Loading simulation...</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="simulation-controls">
+                            <div class="control-group">
+                                <label for="wave-frequency1">Frequency 1 (Hz)</label>
+                                <input type="range" id="wave-frequency1" min="0.1" max="2" step="0.1" value="0.5"
+                                       aria-describedby="wave-frequency1-value">
+                                <span id="wave-frequency1-value" class="control-value">0.5</span>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="wave-frequency2">Frequency 2 (Hz)</label>
+                                <input type="range" id="wave-frequency2" min="0.1" max="2" step="0.1" value="0.5"
+                                       aria-describedby="wave-frequency2-value">
+                                <span id="wave-frequency2-value" class="control-value">0.5</span>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="wave-amplitude">Amplitude</label>
+                                <input type="range" id="wave-amplitude" min="10" max="50" step="5" value="30"
+                                       aria-describedby="wave-amplitude-value">
+                                <span id="wave-amplitude-value" class="control-value">30</span>
+                            </div>
+                            
+                            <div class="control-buttons">
+                                <button class="btn btn-primary" id="wave-start">
+                                    <i class="fas fa-play"></i> Start
+                                </button>
+                                <button class="btn btn-secondary" id="wave-pause">
+                                    <i class="fas fa-pause"></i> Pause
+                                </button>
+                                <button class="btn btn-outline" id="wave-reset">
+                                    <i class="fas fa-redo"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="simulation-info">
+                            <h4>About This Simulation</h4>
+                            <p>
+                                Visualize how two waves interact when they meet. Observe constructive and 
+                                destructive interference patterns and understand how wave superposition creates 
+                                complex wave forms.
+                            </p>
+                            <details class="simulation-details">
+                                <summary>Learning Objectives</summary>
+                                <ul>
+                                    <li>Understand wave superposition principle</li>
+                                    <li>Observe constructive and destructive interference</li>
+                                    <li>Explore how frequency affects interference patterns</li>
+                                    <li>Analyze standing wave formation</li>
+                                </ul>
+                            </details>
+                        </div>
+                    </article>
+
+                    <!-- Gravitational Field -->
+                    <article class="simulation-card" data-category="mechanics" id="gravity">
+                        <div class="simulation-header">
+                            <h3 class="simulation-title">Gravitational Field</h3>
+                            <div class="simulation-badges">
+                                <span class="badge badge-intermediate">Intermediate</span>
+                                <span class="badge badge-mechanics">Mechanics</span>
+                            </div>
+                        </div>
+                        
+                        <div class="simulation-canvas-container">
+                            <div id="gravity-simulation" class="simulation-canvas" role="application"
+                                 aria-label="Interactive gravitational field simulation">
+                                <div class="canvas-loading">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    <p>Loading simulation...</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="simulation-controls">
+                            <div class="control-group">
+                                <label for="gravity-mass">Central Mass</label>
+                                <input type="range" id="gravity-mass" min="50" max="200" step="10" value="100"
+                                       aria-describedby="gravity-mass-value">
+                                <span id="gravity-mass-value" class="control-value">100</span>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="gravity-particles">Number of Particles</label>
+                                <input type="range" id="gravity-particles" min="3" max="8" step="1" value="5"
+                                       aria-describedby="gravity-particles-value">
+                                <span id="gravity-particles-value" class="control-value">5</span>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="gravity-speed">Animation Speed</label>
+                                <input type="range" id="gravity-speed" min="0.5" max="3" step="0.5" value="1"
+                                       aria-describedby="gravity-speed-value">
+                                <span id="gravity-speed-value" class="control-value">1</span>
+                            </div>
+                            
+                            <div class="control-buttons">
+                                <button class="btn btn-primary" id="gravity-start">
+                                    <i class="fas fa-play"></i> Start
+                                </button>
+                                <button class="btn btn-secondary" id="gravity-pause">
+                                    <i class="fas fa-pause"></i> Pause
+                                </button>
+                                <button class="btn btn-outline" id="gravity-reset">
+                                    <i class="fas fa-redo"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="simulation-info">
+                            <h4>About This Simulation</h4>
+                            <p>
+                                Explore gravitational forces and orbital mechanics. Watch how objects move in 
+                                gravitational fields and understand the principles behind planetary motion 
+                                and satellite orbits.
+                            </p>
+                            <details class="simulation-details">
+                                <summary>Learning Objectives</summary>
+                                <ul>
+                                    <li>Understand gravitational force and field concepts</li>
+                                    <li>Observe orbital mechanics in action</li>
+                                    <li>Explore how mass affects gravitational attraction</li>
+                                    <li>Analyze circular and elliptical orbits</li>
+                                </ul>
+                            </details>
+                        </div>
+                    </article>
+
+                    <!-- Electric Field -->
+                    <article class="simulation-card" data-category="electromagnetism" id="electric-field">
+                        <div class="simulation-header">
+                            <h3 class="simulation-title">Electric Field</h3>
+                            <div class="simulation-badges">
+                                <span class="badge badge-advanced">Advanced</span>
+                                <span class="badge badge-electromagnetism">Electromagnetism</span>
+                            </div>
+                        </div>
+                        
+                        <div class="simulation-canvas-container">
+                            <div id="electric-simulation" class="simulation-canvas" role="application"
+                                 aria-label="Interactive electric field simulation">
+                                <div class="canvas-loading">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    <p>Loading simulation...</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="simulation-controls">
+                            <div class="control-group">
+                                <label for="electric-charge1">Charge 1 (μC)</label>
+                                <input type="range" id="electric-charge1" min="-10" max="10" step="1" value="5"
+                                       aria-describedby="electric-charge1-value">
+                                <span id="electric-charge1-value" class="control-value">5</span>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="electric-charge2">Charge 2 (μC)</label>
+                                <input type="range" id="electric-charge2" min="-10" max="10" step="1" value="-5"
+                                       aria-describedby="electric-charge2-value">
+                                <span id="electric-charge2-value" class="control-value">-5</span>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="electric-field-lines">Show Field Lines</label>
+                                <input type="checkbox" id="electric-field-lines" checked>
+                            </div>
+                            
+                            <div class="control-buttons">
+                                <button class="btn btn-primary" id="electric-start">
+                                    <i class="fas fa-play"></i> Start
+                                </button>
+                                <button class="btn btn-secondary" id="electric-pause">
+                                    <i class="fas fa-pause"></i> Pause
+                                </button>
+                                <button class="btn btn-outline" id="electric-reset">
+                                    <i class="fas fa-redo"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="simulation-info">
+                            <h4>About This Simulation</h4>
+                            <p>
+                                Visualize electric fields around charged particles. Explore how electric field 
+                                lines indicate the direction and strength of electric forces, and understand 
+                                the interaction between positive and negative charges.
+                            </p>
+                            <details class="simulation-details">
+                                <summary>Learning Objectives</summary>
+                                <ul>
+                                    <li>Understand electric field concepts and visualization</li>
+                                    <li>Observe field line patterns around charges</li>
+                                    <li>Explore Coulomb's law in action</li>
+                                    <li>Analyze electric potential and equipotential lines</li>
+                                </ul>
+                            </details>
+                        </div>
+                    </article>
+
+                    <!-- Quantum Atom Model -->
+                    <article class="simulation-card" data-category="quantum" id="quantum-atom">
+                        <div class="simulation-header">
+                            <h3 class="simulation-title">3D Quantum Atom Model</h3>
+                            <div class="simulation-badges">
+                                <span class="badge badge-advanced">Advanced</span>
+                                <span class="badge badge-quantum">Quantum</span>
+                            </div>
+                        </div>
+                        
+                        <div class="simulation-canvas-container">
+                            <div id="quantum-atom-simulation" class="simulation-canvas" role="application"
+                                 aria-label="Interactive 3D quantum atom model simulation">
+                                <div class="canvas-loading">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    <p>Loading 3D simulation...</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="simulation-controls">
+                            <div class="control-group">
+                                <label for="quantum-energy-level">Energy Level</label>
+                                <input type="range" id="quantum-energy-level" min="1" max="5" step="1" value="1"
+                                       aria-describedby="quantum-energy-level-value">
+                                <span id="quantum-energy-level-value" class="control-value">1</span>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="quantum-orbital">Orbital Type</label>
+                                <select id="quantum-orbital" aria-describedby="quantum-orbital-value">
+                                    <option value="s">s-orbital</option>
+                                    <option value="p">p-orbital</option>
+                                    <option value="d">d-orbital</option>
+                                    <option value="f">f-orbital</option>
+                                </select>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="quantum-electrons">Number of Electrons</label>
+                                <input type="range" id="quantum-electrons" min="1" max="10" step="1" value="3"
+                                       aria-describedby="quantum-electrons-value">
+                                <span id="quantum-electrons-value" class="control-value">3</span>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="quantum-probability">Show Probability Cloud</label>
+                                <input type="checkbox" id="quantum-probability" checked>
+                            </div>
+                            
+                            <div class="control-buttons">
+                                <button class="btn btn-primary" id="quantum-start">
+                                    <i class="fas fa-play"></i> Start
+                                </button>
+                                <button class="btn btn-secondary" id="quantum-pause">
+                                    <i class="fas fa-pause"></i> Pause
+                                </button>
+                                <button class="btn btn-outline" id="quantum-reset">
+                                    <i class="fas fa-redo"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="simulation-info">
+                            <h4>About This Simulation</h4>
+                            <p>
+                                Explore the quantum mechanical model of the atom with 3D visualizations of electron 
+                                orbitals, energy levels, and probability clouds. Understand how electrons exist in 
+                                discrete energy states around the nucleus.
+                            </p>
+                            <details class="simulation-details">
+                                <summary>Learning Objectives</summary>
+                                <ul>
+                                    <li>Visualize 3D electron orbital shapes and orientations</li>
+                                    <li>Understand quantum energy levels and electron transitions</li>
+                                    <li>Explore probability density and wave functions</li>
+                                    <li>Compare different orbital types (s, p, d, f)</li>
+                                </ul>
+                            </details>
+                        </div>
+                    </article>
+
+                    <!-- Wave-Particle Duality -->
+                    <article class="simulation-card" data-category="quantum" id="wave-particle">
+                        <div class="simulation-header">
+                            <h3 class="simulation-title">Wave-Particle Duality</h3>
+                            <div class="simulation-badges">
+                                <span class="badge badge-advanced">Advanced</span>
+                                <span class="badge badge-quantum">Quantum</span>
+                            </div>
+                        </div>
+                        
+                        <div class="simulation-canvas-container">
+                            <div id="wave-particle-simulation" class="simulation-canvas" role="application"
+                                 aria-label="Interactive wave-particle duality simulation">
+                                <div class="canvas-loading">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    <p>Loading simulation...</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="simulation-controls">
+                            <div class="control-group">
+                                <label for="particle-wavelength">De Broglie Wavelength (nm)</label>
+                                <input type="range" id="particle-wavelength" min="0.1" max="5" step="0.1" value="1"
+                                       aria-describedby="particle-wavelength-value">
+                                <span id="particle-wavelength-value" class="control-value">1</span>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="particle-speed">Particle Speed</label>
+                                <input type="range" id="particle-speed" min="0.1" max="2" step="0.1" value="1"
+                                       aria-describedby="particle-speed-value">
+                                <span id="particle-speed-value" class="control-value">1</span>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="show-wave">Show Wave Nature</label>
+                                <input type="checkbox" id="show-wave" checked>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="show-particle">Show Particle Nature</label>
+                                <input type="checkbox" id="show-particle" checked>
+                            </div>
+                            
+                            <div class="control-buttons">
+                                <button class="btn btn-primary" id="wave-particle-start">
+                                    <i class="fas fa-play"></i> Start
+                                </button>
+                                <button class="btn btn-secondary" id="wave-particle-pause">
+                                    <i class="fas fa-pause"></i> Pause
+                                </button>
+                                <button class="btn btn-outline" id="wave-particle-reset">
+                                    <i class="fas fa-redo"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="simulation-info">
+                            <h4>About This Simulation</h4>
+                            <p>
+                                Demonstrate the dual nature of matter at the quantum scale. Observe how particles 
+                                can exhibit both wave-like and particle-like properties depending on how they are 
+                                observed and measured.
+                            </p>
+                            <details class="simulation-details">
+                                <summary>Learning Objectives</summary>
+                                <ul>
+                                    <li>Understand the concept of wave-particle duality</li>
+                                    <li>Explore de Broglie wavelength relationships</li>
+                                    <li>Visualize quantum interference patterns</li>
+                                    <li>Connect classical and quantum physics concepts</li>
+                                </ul>
+                            </details>
+                        </div>
+                    </article>
+
+                    <!-- Quantum Tunneling -->
+                    <article class="simulation-card" data-category="quantum" id="quantum-tunneling">
+                        <div class="simulation-header">
+                            <h3 class="simulation-title">Quantum Tunneling Effect</h3>
+                            <div class="simulation-badges">
+                                <span class="badge badge-advanced">Advanced</span>
+                                <span class="badge badge-quantum">Quantum</span>
+                            </div>
+                        </div>
+                        
+                        <div class="simulation-canvas-container">
+                            <div id="tunneling-simulation" class="simulation-canvas" role="application"
+                                 aria-label="Interactive quantum tunneling simulation">
+                                <div class="canvas-loading">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    <p>Loading simulation...</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="simulation-controls">
+                            <div class="control-group">
+                                <label for="barrier-height">Barrier Height (eV)</label>
+                                <input type="range" id="barrier-height" min="1" max="10" step="0.5" value="5"
+                                       aria-describedby="barrier-height-value">
+                                <span id="barrier-height-value" class="control-value">5</span>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="barrier-width">Barrier Width (nm)</label>
+                                <input type="range" id="barrier-width" min="0.5" max="5" step="0.1" value="2"
+                                       aria-describedby="barrier-width-value">
+                                <span id="barrier-width-value" class="control-value">2</span>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="particle-energy">Particle Energy (eV)</label>
+                                <input type="range" id="particle-energy" min="1" max="8" step="0.5" value="3"
+                                       aria-describedby="particle-energy-value">
+                                <span id="particle-energy-value" class="control-value">3</span>
+                            </div>
+                            
+                            <div class="control-buttons">
+                                <button class="btn btn-primary" id="tunneling-start">
+                                    <i class="fas fa-play"></i> Start
+                                </button>
+                                <button class="btn btn-secondary" id="tunneling-pause">
+                                    <i class="fas fa-pause"></i> Pause
+                                </button>
+                                <button class="btn btn-outline" id="tunneling-reset">
+                                    <i class="fas fa-redo"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="simulation-info">
+                            <h4>About This Simulation</h4>
+                            <p>
+                                Explore the quantum mechanical phenomenon where particles can pass through energy 
+                                barriers that would be impossible to cross classically. Understand tunneling 
+                                probability and its applications in modern technology.
+                            </p>
+                            <details class="simulation-details">
+                                <summary>Learning Objectives</summary>
+                                <ul>
+                                    <li>Understand quantum tunneling probability</li>
+                                    <li>Explore barrier height and width effects</li>
+                                    <li>Visualize wave function behavior at barriers</li>
+                                    <li>Connect to real-world applications (STM, diodes)</li>
+                                </ul>
+                            </details>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Load More Button -->
+                <div class="section-footer">
+                    <button class="btn btn-outline btn-large" id="load-more-simulations">
+                        <i class="fas fa-plus"></i>
+                        Load More Simulations
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Simulation Help -->
+        <section class="simulation-help" aria-labelledby="help-title">
+            <div class="container">
+                <h2 id="help-title" class="section-title">How to Use Simulations</h2>
+                <div class="help-grid">
+                    <div class="help-item">
+                        <div class="help-icon">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <h3>Start & Control</h3>
+                        <p>Use the play, pause, and reset buttons to control simulation playback. Adjust parameters in real-time to see immediate effects.</p>
+                    </div>
+                    
+                    <div class="help-item">
+                        <div class="help-icon">
+                            <i class="fas fa-sliders-h"></i>
+                        </div>
+                        <h3>Adjust Parameters</h3>
+                        <p>Drag the sliders to change physical properties like mass, frequency, or charge. Each parameter shows its current value.</p>
+                    </div>
+                    
+                    <div class="help-item">
+                        <div class="help-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <h3>Learn More</h3>
+                        <p>Click on "Learning Objectives" to expand detailed information about what each simulation teaches.</p>
+                    </div>
+                    
+                    <div class="help-item">
+                        <div class="help-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3>Mobile Friendly</h3>
+                        <p>All simulations are optimized for touch devices. Use gestures to interact and adjust parameters on mobile.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <a href="index.html" class="logo">
+                            <i class="fas fa-atom" aria-hidden="true"></i>
+                            <span>PhysicsLearn</span>
+                        </a>
+                        <p>Making physics accessible through interactive learning.</p>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Platform</h3>
+                    <ul class="footer-links">
+                        <li><a href="simulations.html">Simulations</a></li>
+                        <li><a href="resources.html">Resources</a></li>
+                        <li><a href="forum.html">Community Forum</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook" class="social-link">
+                            <i class="fab fa-facebook" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" aria-label="Twitter" class="social-link">
+                            <i class="fab fa-twitter" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" aria-label="LinkedIn" class="social-link">
+                            <i class="fab fa-linkedin" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" aria-label="YouTube" class="social-link">
+                            <i class="fab fa-youtube" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 PhysicsLearn. Created by <a href="https://github.com/abuzarraziqgithub" target="_blank" rel="noopener noreferrer" class="creator-link">Abuzar RaziQ</a>. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/simulations.js"></script>
+    <script src="js/three-effects.js"></script>
+    <script src="js/smooth-scroll.js"></script>
+    <script src="js/particles-config.js"></script>
+    <script src="js/quantum-simulations.js"></script>
+</body>
+</html>
