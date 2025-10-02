@@ -1,0 +1,134 @@
+.header {
+  height: 60px;
+  background: #34495e;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.header h1 {
+  font-size: 24px;
+  font-weight: 300;
+  margin: 0;
+}
+
+.header-subtitle {
+  font-size: 12px;
+  color: #bdc3c7;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.header-center {
+  display: flex;
+  align-items: center;
+}
+
+.view-toggle {
+  display: flex;
+  background: #2c3e50;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.view-toggle button {
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  color: #bdc3c7;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+}
+
+.view-toggle button:hover {
+  background: #3498db;
+  color: white;
+}
+
+.view-toggle button.active {
+  background: #3498db;
+  color: white;
+}
+
+.header-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.header-button {
+  padding: 8px 16px;
+  border: 1px solid #3498db;
+  background: transparent;
+  color: #3498db;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+}
+
+.header-button:hover {
+  background: #3498db;
+  color: white;
+}
+
+.header-button.active {
+  background: #e74c3c;
+  border-color: #e74c3c;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 0 15px;
+  }
+  
+  .header h1 {
+    font-size: 20px;
+  }
+  
+  .header-subtitle {
+    display: none;
+  }
+  
+  .header-controls {
+    gap: 5px;
+  }
+  
+  .header-button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 10px 15px;
+  }
+  
+  .header-left,
+  .header-center,
+  .header-controls {
+    flex: 1;
+    justify-content: center;
+    margin: 5px 0;
+  }
+  
+  .view-toggle button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,2032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CivilEye - Residential CAD Tool</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Enhanced 3D Canvas Styles */
+        .canvas-3d {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .canvas-3d.active {
+            display: block;
+        }
+
+        .three-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .measurement-overlay {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 100;
+        }
+
+        .measurement-line {
+            position: absolute;
+            background: #ff4444;
+            height: 2px;
+            transform-origin: left center;
+            z-index: 50;
+        }
+
+        .measurement-text {
+            position: absolute;
+            background: rgba(255, 68, 68, 0.9);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: bold;
+            white-space: nowrap;
+            z-index: 51;
+        }
+
+        .selection-handle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #3498db;
+            border: 2px solid white;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 60;
+        }
+
+        .selection-handle:hover {
+            background: #2980b9;
+            transform: scale(1.2);
+        }
+
+        .selection-handle.nw { cursor: nw-resize; }
+        .selection-handle.ne { cursor: ne-resize; }
+        .selection-handle.sw { cursor: sw-resize; }
+        .selection-handle.se { cursor: se-resize; }
+
+        .object-selected {
+            outline: 2px dashed #3498db;
+            outline-offset: 2px;
+        }
+
+        .drag-preview {
+            opacity: 0.7;
+            transform: rotate(5deg);
+        }
+
+        /* Enhanced Toolbar */
+        .toolbar {
+            width: 60px;
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+        }
+
+        .tool-button {
+            width: 45px;
+            height: 45px;
+            margin: 3px 0;
+            border: none;
+            background: linear-gradient(145deg, #34495e, #2c3e50);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .tool-button:hover {
+            background: linear-gradient(145deg, #3498db, #2980b9);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .tool-button.active {
+            background: linear-gradient(145deg, #e74c3c, #c0392b);
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.3); }
+            50% { box-shadow: 0 0 0 6px rgba(231, 76, 60, 0.1); }
+            100% { box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.3); }
+        }
+
+        /* Enhanced Properties Panel */
+        .properties-panel {
+            width: 320px;
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+            border-left: 1px solid #ddd;
+            padding: 15px;
+            overflow-y: auto;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .property-section {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border: 1px solid #e9ecef;
+        }
+
+        .property-section h4 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+
+        .property-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            gap: 10px;
+        }
+
+        .property-item label {
+            font-size: 13px;
+            color: #555;
+            font-weight: 500;
+            min-width: 100px;
+        }
+
+        .property-item input,
+        .property-item select {
+            padding: 6px 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 12px;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .property-item input:focus,
+        .property-item select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .property-item input[type="color"] {
+            width: 50px;
+            height: 35px;
+            padding: 2px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .property-item input[type="range"] {
+            flex: 1;
+            margin: 0 10px;
+        }
+
+        .unit-converter {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .unit-converter select {
+            padding: 4px 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+
+        /* Enhanced Canvas Status */
+        .canvas-status {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(90deg, rgba(52, 73, 94, 0.95) 0%, rgba(44, 62, 80, 0.95) 100%);
+            color: white;
+            padding: 8px 15px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-item .icon {
+            width: 16px;
+            height: 16px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        /* 3D Controls */
+        .view-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            gap: 5px;
+            z-index: 100;
+        }
+
+        .view-control {
+            width: 35px;
+            height: 35px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .view-control:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.1);
+        }
+
+        .view-control.active {
+            background: #3498db;
+            border-color: #3498db;
+        }
+
+        /* Notification System */
+        .notification {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: #27ae60;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: #e74c3c;
+        }
+
+        .notification.warning {
+            background: #f39c12;
+        }
+
+        /* Loading Spinner */
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 200;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            overflow: hidden;
+        }
+
+        .header {
+            height: 60px;
+            background: #34495e;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 300;
+        }
+
+        .view-toggle {
+            display: flex;
+            background: #2c3e50;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .view-toggle button {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            color: #bdc3c7;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .view-toggle button.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .app-content {
+            height: calc(100vh - 60px);
+            display: flex;
+        }
+
+        .toolbar {
+            width: 60px;
+            background: #2c3e50;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .tool-button {
+            width: 40px;
+            height: 40px;
+            margin: 5px 0;
+            border: none;
+            background: #34495e;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .tool-button:hover {
+            background: #3498db;
+        }
+
+        .tool-button.active {
+            background: #e74c3c;
+        }
+
+        .main-workspace {
+            flex: 1;
+            display: flex;
+            position: relative;
+        }
+
+        .canvas-container {
+            flex: 1;
+            position: relative;
+            background: white;
+        }
+
+        .canvas-2d {
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+            display: block;
+        }
+
+        .canvas-3d {
+            width: 100%;
+            height: 100%;
+            background: #f0f0f0;
+            display: none;
+        }
+
+        .canvas-3d.active {
+            display: block;
+        }
+
+        .properties-panel {
+            width: 300px;
+            background: white;
+            border-left: 1px solid #ddd;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .property-group {
+            margin-bottom: 20px;
+        }
+
+        .property-group h4 {
+            margin-bottom: 10px;
+            color: #34495e;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .property-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .property-item label {
+            font-size: 13px;
+            color: #555;
+        }
+
+        .property-item input {
+            width: 100px;
+            padding: 4px 8px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        .canvas-status {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(52, 73, 94, 0.9);
+            color: white;
+            padding: 5px 15px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .empty-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #666;
+        }
+
+        .empty-message h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #34495e;
+        }
+
+        @media (max-width: 768px) {
+            .properties-panel {
+                width: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .toolbar {
+                position: absolute;
+                top: 60px;
+                left: 0;
+                z-index: 1000;
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+            
+            .toolbar.open {
+                transform: translateX(0);
+            }
+            
+            .properties-panel {
+                position: absolute;
+                top: 60px;
+                right: 0;
+                height: calc(100vh - 60px);
+                transform: translateX(100%);
+                transition: transform 0.3s;
+                z-index: 1000;
+            }
+            
+            .properties-panel.open {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>CivilEye - Residential CAD Tool</h1>
+        <div class="view-toggle">
+            <button id="view2d" class="active">2D Drawing</button>
+            <button id="view3d">3D View</button>
+        </div>
+    </div>
+
+    <div class="app-content">
+        <div class="toolbar">
+            <button class="tool-button active" data-tool="select" title="Select (V)">↖</button>
+            <button class="tool-button" data-tool="line" title="Line (L)">📏</button>
+            <button class="tool-button" data-tool="rectangle" title="Rectangle (R)">⬜</button>
+            <button class="tool-button" data-tool="circle" title="Circle (C)">⭕</button>
+            <button class="tool-button" data-tool="polygon" title="Polygon (P)">⬢</button>
+            <button class="tool-button" data-tool="freehand" title="Freehand (F)">✏️</button>
+            <button class="tool-button" data-tool="measure" title="Measure (M)">📐</button>
+            <button class="tool-button" data-tool="room" title="Room Templates (Q)">🏠</button>
+            <div style="width: 30px; height: 1px; background: #34495e; margin: 10px 0;"></div>
+            <button class="tool-button" data-tool="sync-2d-3d" title="Sync 2D to 3D (S)" style="background: linear-gradient(145deg, #27ae60, #229954);">🔄</button>
+            <div style="width: 30px; height: 1px; background: #34495e; margin: 10px 0;"></div>
+            <button class="tool-button" data-tool="undo" title="Undo (Ctrl+Z)">↶</button>
+            <button class="tool-button" data-tool="redo" title="Redo (Ctrl+Y)">↷</button>
+            <button class="tool-button" data-tool="delete" title="Delete (Del)">🗑️</button>
+            <div style="width: 30px; height: 1px; background: #34495e; margin: 10px 0;"></div>
+            <button class="tool-button" data-tool="zoom-in" title="Zoom In">🔍+</button>
+            <button class="tool-button" data-tool="zoom-out" title="Zoom Out">🔍-</button>
+            <button class="tool-button" data-tool="fit-screen" title="Fit to Screen">📄</button>
+        </div>
+
+        <div class="main-workspace">
+            <div class="canvas-container">
+                <canvas id="canvas2d" class="canvas-2d"></canvas>
+                <div id="canvas3d" class="canvas-3d">
+                    <div class="view-controls">
+                        <button class="view-control active" data-view="perspective" title="Perspective View">📐</button>
+                        <button class="view-control" data-view="top" title="Top View">⬆</button>
+                        <button class="view-control" data-view="front" title="Front View">➡</button>
+                        <button class="view-control" data-view="side" title="Side View">⬅</button>
+                    </div>
+                    <div class="measurement-overlay">
+                        <div>Distance: <span id="3d-distance">0</span> <span id="3d-unit">meters</span></div>
+                        <div>Area: <span id="3d-area">0</span> <span id="3d-area-unit">m²</span></div>
+                    </div>
+                    <canvas id="three-canvas" class="three-container"></canvas>
+                    <div class="empty-message" id="empty-3d">
+                        <h3>3D Interactive View</h3>
+                        <p>Create your 2D plan first, then return here for interactive 3D modeling</p>
+                        <button onclick="generateInteractive3D()" style="margin-top: 15px; padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                            Generate Interactive 3D
+                        </button>
+                    </div>
+                </div>
+                <div class="canvas-status">
+                    <span id="status-tool">Tool: Select</span>
+                    <span id="status-position">Position: 0, 0</span>
+                    <span id="status-zoom">Zoom: 100%</span>
+                </div>
+            </div>
+
+            <div class="properties-panel">
+                <div class="property-section">
+                    <h4>🎨 Drawing Settings</h4>
+                    <div class="property-item">
+                        <label>Stroke Color:</label>
+                        <input type="color" id="strokeColor" value="#000000">
+                    </div>
+                    <div class="property-item">
+                        <label>Fill Color:</label>
+                        <input type="color" id="fillColor" value="#ffffff">
+                    </div>
+                    <div class="property-item">
+                        <label>Stroke Width:</label>
+                        <input type="range" id="strokeWidth" min="1" max="10" value="2">
+                        <span id="strokeWidthValue">2px</span>
+                    </div>
+                    <div class="property-item">
+                        <label>Opacity:</label>
+                        <input type="range" id="opacity" min="0.1" max="1" step="0.1" value="1">
+                        <span id="opacityValue">100%</span>
+                    </div>
+                </div>
+
+                <div class="property-section">
+                    <h4>📏 Measurements</h4>
+                    <div class="property-item">
+                        <label>Unit:</label>
+                        <div class="unit-converter">
+                            <select id="measurementUnit">
+                                <option value="meters">Meters</option>
+                                <option value="feet">Feet</option>
+                                <option value="inches">Inches</option>
+                                <option value="centimeters">Centimeters</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="property-item">
+                        <label>Precision:</label>
+                        <input type="number" id="measurementPrecision" min="0" max="4" value="2">
+                    </div>
+                    <div class="property-item">
+                        <label>Auto-Measure:</label>
+                        <input type="checkbox" id="autoMeasure" checked>
+                    </div>
+                </div>
+
+                <div class="property-section">
+                    <h4>🏗️ 3D Wall Settings</h4>
+                    <div class="property-item">
+                        <label>Height:</label>
+                        <input type="number" id="wallHeight" value="3" min="1" max="50" step="0.1">
+                        <select id="heightUnit">
+                            <option value="meters">m</option>
+                            <option value="feet">ft</option>
+                        </select>
+                    </div>
+                    <div class="property-item">
+                        <label>Thickness:</label>
+                        <input type="number" id="wallThickness" value="0.2" min="0.05" max="1" step="0.05">
+                        <select id="thicknessUnit">
+                            <option value="meters">m</option>
+                            <option value="inches">in</option>
+                        </select>
+                    </div>
+                    <div class="property-item">
+                        <label>Material:</label>
+                        <select id="wallMaterial">
+                            <option value="concrete">Concrete</option>
+                            <option value="brick">Brick</option>
+                            <option value="wood">Wood</option>
+                            <option value="steel">Steel</option>
+                            <option value="glass">Glass</option>
+                        </select>
+                    </div>
+                    <div class="property-item">
+                        <label>Texture:</label>
+                        <select id="wallTexture">
+                            <option value="smooth">Smooth</option>
+                            <option value="rough">Rough</option>
+                            <option value="brick">Brick Pattern</option>
+                            <option value="wood">Wood Grain</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="property-section">
+                    <h4>⊞ Grid & Snap</h4>
+                    <div class="property-item">
+                        <label>Grid Size:</label>
+                        <input type="number" id="gridSize" value="20" min="5" max="100">
+                        <span>px</span>
+                    </div>
+                    <div class="property-item">
+                        <label>Show Grid:</label>
+                        <input type="checkbox" id="showGrid" checked>
+                    </div>
+                    <div class="property-item">
+                        <label>Snap to Grid:</label>
+                        <input type="checkbox" id="snapToGrid" checked>
+                    </div>
+                    <div class="property-item">
+                        <label>Smart Snap:</label>
+                        <input type="checkbox" id="smartSnap" checked>
+                    </div>
+                </div>
+
+                <div class="property-section">
+                    <h4>🏠 Room Templates</h4>
+                    <div class="property-item">
+                        <label>Room Type:</label>
+                        <select id="roomTemplate">
+                            <option value="custom">Custom Room</option>
+                            <option value="bedroom">Bedroom (12x10 ft)</option>
+                            <option value="living">Living Room (16x12 ft)</option>
+                            <option value="kitchen">Kitchen (10x8 ft)</option>
+                            <option value="bathroom">Bathroom (8x6 ft)</option>
+                            <option value="office">Office (10x10 ft)</option>
+                        </select>
+                    </div>
+                    <div class="property-item">
+                        <label>Wall Type:</label>
+                        <select id="wallType">
+                            <option value="interior">Interior Wall</option>
+                            <option value="exterior">Exterior Wall</option>
+                            <option value="load-bearing">Load Bearing</option>
+                        </select>
+                    </div>
+                    <div class="property-item">
+                        <button onclick="insertRoomTemplate()" style="width: 100%; padding: 8px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                            Insert Room
+                        </button>
+                    </div>
+                </div>
+
+                <div class="property-section">
+                    <h4>🎯 Selection Info</h4>
+                    <div id="selectionInfo">
+                        <div class="property-item">
+                            <label>Selected:</label>
+                            <span id="selectedCount">0 objects</span>
+                        </div>
+                        <div class="property-item">
+                            <label>Type:</label>
+                            <span id="selectedType">None</span>
+                        </div>
+                        <div class="property-item">
+                            <label>Length:</label>
+                            <span id="selectedLength">0</span>
+                        </div>
+                        <div class="property-item">
+                            <label>Area:</label>
+                            <span id="selectedArea">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced Global state
+        let currentTool = 'select';
+        let isDrawing = false;
+        let currentPath = [];
+        let objects = [];
+        let selectedObjects = [];
+        let mousePos = { x: 0, y: 0 };
+        let startPos = null;
+        
+        // Enhanced features
+        let history = [];
+        let historyIndex = -1;
+        let zoom = 1;
+        let panOffset = { x: 0, y: 0 };
+        let isDragging = false;
+        let dragStart = null;
+        let measurementLines = [];
+        let autoMeasure = true;
+        
+        // 3D Scene variables
+        let scene, camera, renderer, controls;
+        let threeObjects = [];
+        let selected3DObject = null;
+        let is3DInitialized = false;
+        
+        // Unit conversion
+        const unitConversions = {
+            'meters': { feet: 3.28084, inches: 39.3701, centimeters: 100 },
+            'feet': { meters: 0.3048, inches: 12, centimeters: 30.48 },
+            'inches': { meters: 0.0254, feet: 0.0833333, centimeters: 2.54 },
+            'centimeters': { meters: 0.01, feet: 0.0328084, inches: 0.393701 }
+        };
+        
+        let currentUnit = 'meters';
+
+        // Canvas setup
+        const canvas2d = document.getElementById('canvas2d');
+        const ctx = canvas2d.getContext('2d');
+        const canvas3d = document.getElementById('canvas3d');
+
+        // Initialize canvas
+        function initCanvas() {
+            canvas2d.width = canvas2d.offsetWidth;
+            canvas2d.height = canvas2d.offsetHeight;
+            drawGrid();
+            updateStatus();
+        }
+
+        // Enhanced utility functions
+        function convertUnits(value, fromUnit, toUnit) {
+            if (fromUnit === toUnit) return value;
+            return value * unitConversions[fromUnit][toUnit];
+        }
+
+        function formatMeasurement(value, unit) {
+            const precision = parseInt(document.getElementById('measurementPrecision').value) || 2;
+            const convertedValue = convertUnits(value, 'meters', unit);
+            return convertedValue.toFixed(precision);
+        }
+
+        function calculateDistance(point1, point2) {
+            const dx = point2.x - point1.x;
+            const dy = point2.y - point1.y;
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        function calculateArea(points) {
+            if (points.length < 3) return 0;
+            let area = 0;
+            for (let i = 0; i < points.length; i++) {
+                const j = (i + 1) % points.length;
+                area += points[i].x * points[j].y;
+                area -= points[j].x * points[i].y;
+            }
+            return Math.abs(area) / 2;
+        }
+
+        function saveState() {
+            historyIndex++;
+            if (historyIndex < history.length) {
+                history.length = historyIndex;
+            }
+            history.push({
+                objects: JSON.parse(JSON.stringify(objects)),
+                selectedObjects: [...selectedObjects]
+            });
+            if (history.length > 50) {
+                history.shift();
+                historyIndex--;
+            }
+        }
+
+        function undo() {
+            if (historyIndex > 0) {
+                historyIndex--;
+                const state = history[historyIndex];
+                objects = JSON.parse(JSON.stringify(state.objects));
+                selectedObjects = [...state.selectedObjects];
+                redrawCanvas();
+                updateSelectionInfo();
+                showNotification('Undone', 'success');
+            }
+        }
+
+        function redo() {
+            if (historyIndex < history.length - 1) {
+                historyIndex++;
+                const state = history[historyIndex];
+                objects = JSON.parse(JSON.stringify(state.objects));
+                selectedObjects = [...state.selectedObjects];
+                redrawCanvas();
+                updateSelectionInfo();
+                showNotification('Redone', 'success');
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.classList.add('show'), 100);
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => document.body.removeChild(notification), 300);
+            }, 3000);
+        }
+
+        // Drawing functions
+        function drawGrid() {
+            const showGrid = document.getElementById('showGrid').checked;
+            if (!showGrid) return;
+
+            const gridSize = parseInt(document.getElementById('gridSize').value);
+            ctx.save();
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 0.5;
+
+            for (let x = 0; x < canvas2d.width; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas2d.height);
+                ctx.stroke();
+            }
+
+            for (let y = 0; y < canvas2d.height; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas2d.width, y);
+                ctx.stroke();
+            }
+
+            ctx.restore();
+        }
+
+        function snapToGrid(point) {
+            const snapToGrid = document.getElementById('snapToGrid').checked;
+            if (!snapToGrid) return point;
+
+            const gridSize = parseInt(document.getElementById('gridSize').value);
+            return {
+                x: Math.round(point.x / gridSize) * gridSize,
+                y: Math.round(point.y / gridSize) * gridSize
+            };
+        }
+
+        function getMousePos(e) {
+            const rect = canvas2d.getBoundingClientRect();
+            return {
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top
+            };
+        }
+
+        function redrawCanvas() {
+            ctx.clearRect(0, 0, canvas2d.width, canvas2d.height);
+            drawGrid();
+
+            // Draw all objects
+            objects.forEach((obj, index) => {
+                const isSelected = selectedObjects.includes(obj.id);
+                drawObject(obj, isSelected);
+            });
+
+            // Draw current path
+            if (currentPath.length > 0 && isDrawing) {
+                drawCurrentPath();
+            }
+
+            // Draw measurements
+            if (autoMeasure) {
+                drawMeasurements();
+            }
+        }
+
+        function drawMeasurements() {
+            objects.forEach(obj => {
+                if (obj.type === 'line' && obj.points && obj.points.length === 2) {
+                    drawMeasurementLine(obj.points[0], obj.points[1]);
+                } else if (obj.type === 'rectangle') {
+                    drawRectangleMeasurements(obj);
+                }
+            });
+        }
+
+        function drawMeasurementLine(point1, point2) {
+            const distance = calculateDistance(point1, point2);
+            const unit = document.getElementById('measurementUnit').value;
+            const formattedDistance = formatMeasurement(distance / 100, unit); // Convert pixels to meters (approximate)
+            
+            const midX = (point1.x + point2.x) / 2;
+            const midY = (point1.y + point2.y) / 2;
+            
+            // Draw measurement line
+            ctx.save();
+            ctx.strokeStyle = '#ff4444';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(point1.x, point1.y - 20);
+            ctx.lineTo(point2.x, point2.y - 20);
+            ctx.stroke();
+            
+            // Draw measurement text
+            ctx.fillStyle = '#ff4444';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(`${formattedDistance} ${unit}`, midX, point1.y - 25);
+            ctx.restore();
+        }
+
+        function drawRectangleMeasurements(obj) {
+            const width = Math.abs(obj.width);
+            const height = Math.abs(obj.height);
+            const unit = document.getElementById('measurementUnit').value;
+            const formattedWidth = formatMeasurement(width / 100, unit);
+            const formattedHeight = formatMeasurement(height / 100, unit);
+            
+            ctx.save();
+            ctx.strokeStyle = '#ff4444';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([5, 5]);
+            
+            // Width measurement
+            ctx.beginPath();
+            ctx.moveTo(obj.x, obj.y - 15);
+            ctx.lineTo(obj.x + width, obj.y - 15);
+            ctx.stroke();
+            ctx.fillStyle = '#ff4444';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(`${formattedWidth} ${unit}`, obj.x + width/2, obj.y - 20);
+            
+            // Height measurement
+            ctx.beginPath();
+            ctx.moveTo(obj.x - 15, obj.y);
+            ctx.lineTo(obj.x - 15, obj.y + height);
+            ctx.stroke();
+            ctx.fillText(`${formattedHeight} ${unit}`, obj.x - 20, obj.y + height/2);
+            ctx.restore();
+        }
+
+        function drawObject(obj) {
+            ctx.save();
+            ctx.strokeStyle = obj.strokeColor || '#000000';
+            ctx.lineWidth = obj.strokeWidth || 2;
+            ctx.fillStyle = obj.fillColor || 'transparent';
+
+            switch (obj.type) {
+                case 'line':
+                    ctx.beginPath();
+                    ctx.moveTo(obj.points[0].x, obj.points[0].y);
+                    ctx.lineTo(obj.points[1].x, obj.points[1].y);
+                    ctx.stroke();
+                    break;
+
+                case 'rectangle':
+                    ctx.strokeRect(obj.x, obj.y, obj.width, obj.height);
+                    if (obj.fillColor !== 'transparent') {
+                        ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
+                    }
+                    break;
+
+                case 'circle':
+                    ctx.beginPath();
+                    ctx.arc(obj.x, obj.y, obj.radius, 0, 2 * Math.PI);
+                    ctx.stroke();
+                    if (obj.fillColor !== 'transparent') {
+                        ctx.fill();
+                    }
+                    break;
+
+                case 'polygon':
+                    if (obj.points.length >= 3) {
+                        ctx.beginPath();
+                        ctx.moveTo(obj.points[0].x, obj.points[0].y);
+                        for (let i = 1; i < obj.points.length; i++) {
+                            ctx.lineTo(obj.points[i].x, obj.points[i].y);
+                        }
+                        ctx.closePath();
+                        ctx.stroke();
+                        if (obj.fillColor !== 'transparent') {
+                            ctx.fill();
+                        }
+                    }
+                    break;
+
+                case 'freehand':
+                    if (obj.points.length >= 2) {
+                        ctx.beginPath();
+                        ctx.moveTo(obj.points[0].x, obj.points[0].y);
+                        for (let i = 1; i < obj.points.length; i++) {
+                            ctx.lineTo(obj.points[i].x, obj.points[i].y);
+                        }
+                        ctx.stroke();
+                    }
+                    break;
+
+                case 'measurement':
+                    if (obj.points.length >= 2) {
+                        ctx.beginPath();
+                        ctx.moveTo(obj.points[0].x, obj.points[0].y);
+                        ctx.lineTo(obj.points[1].x, obj.points[1].y);
+                        ctx.stroke();
+                        
+                        // Draw measurement text
+                        ctx.fillStyle = '#ff4444';
+                        ctx.font = '12px Arial';
+                        ctx.textAlign = 'center';
+                        const midX = (obj.points[0].x + obj.points[1].x) / 2;
+                        const midY = (obj.points[0].y + obj.points[1].y) / 2;
+                        ctx.fillText(`${obj.distance} ${obj.unit}`, midX, midY - 10);
+                    }
+                    break;
+
+                case 'room':
+                    // Draw room as rectangle with special styling
+                    ctx.strokeRect(obj.x, obj.y, obj.width, obj.height);
+                    if (obj.fillColor !== 'transparent') {
+                        ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
+                    }
+                    
+                    // Draw room label
+                    ctx.fillStyle = '#333';
+                    ctx.font = 'bold 12px Arial';
+                    ctx.textAlign = 'center';
+                    const roomCenterX = obj.x + obj.width / 2;
+                    const roomCenterY = obj.y + obj.height / 2;
+                    ctx.fillText(obj.roomType.toUpperCase(), roomCenterX, roomCenterY);
+                    break;
+            }
+
+            ctx.restore();
+        }
+
+        function drawCurrentPath() {
+            if (currentPath.length === 0) return;
+
+            ctx.save();
+            const strokeColor = document.getElementById('strokeColor').value;
+            const fillColor = document.getElementById('fillColor').value;
+            const strokeWidth = parseInt(document.getElementById('strokeWidth').value);
+
+            ctx.strokeStyle = strokeColor;
+            ctx.lineWidth = strokeWidth;
+            ctx.fillStyle = fillColor;
+
+            switch (currentTool) {
+                case 'line':
+                    if (currentPath.length >= 1) {
+                        ctx.beginPath();
+                        ctx.moveTo(currentPath[0].x, currentPath[0].y);
+                        ctx.lineTo(mousePos.x, mousePos.y);
+                        ctx.stroke();
+                    }
+                    break;
+
+                case 'rectangle':
+                    if (currentPath.length >= 1) {
+                        const width = mousePos.x - currentPath[0].x;
+                        const height = mousePos.y - currentPath[0].y;
+                        ctx.strokeRect(currentPath[0].x, currentPath[0].y, width, height);
+                        if (fillColor !== 'transparent') {
+                            ctx.fillRect(currentPath[0].x, currentPath[0].y, width, height);
+                        }
+                    }
+                    break;
+
+                case 'circle':
+                    if (currentPath.length >= 1) {
+                        const radius = Math.sqrt(
+                            Math.pow(mousePos.x - currentPath[0].x, 2) + 
+                            Math.pow(mousePos.y - currentPath[0].y, 2)
+                        );
+                        ctx.beginPath();
+                        ctx.arc(currentPath[0].x, currentPath[0].y, radius, 0, 2 * Math.PI);
+                        ctx.stroke();
+                        if (fillColor !== 'transparent') {
+                            ctx.fill();
+                        }
+                    }
+                    break;
+
+                case 'polygon':
+                    if (currentPath.length >= 2) {
+                        ctx.beginPath();
+                        ctx.moveTo(currentPath[0].x, currentPath[0].y);
+                        for (let i = 1; i < currentPath.length; i++) {
+                            ctx.lineTo(currentPath[i].x, currentPath[i].y);
+                        }
+                        ctx.lineTo(mousePos.x, mousePos.y);
+                        ctx.stroke();
+                        if (fillColor !== 'transparent' && currentPath.length >= 3) {
+                            ctx.fill();
+                        }
+                    }
+                    break;
+
+                case 'freehand':
+                    if (currentPath.length >= 2) {
+                        ctx.beginPath();
+                        ctx.moveTo(currentPath[0].x, currentPath[0].y);
+                        for (let i = 1; i < currentPath.length; i++) {
+                            ctx.lineTo(currentPath[i].x, currentPath[i].y);
+                        }
+                        ctx.stroke();
+                    }
+                    break;
+
+                case 'measure':
+                    if (currentPath.length >= 1) {
+                        ctx.beginPath();
+                        ctx.moveTo(currentPath[0].x, currentPath[0].y);
+                        ctx.lineTo(mousePos.x, mousePos.y);
+                        ctx.stroke();
+                        
+                        // Draw measurement text
+                        const distance = calculateDistance(currentPath[0], mousePos);
+                        const unit = document.getElementById('measurementUnit').value;
+                        const formattedDistance = formatMeasurement(distance / 100, unit);
+                        ctx.fillStyle = '#ff4444';
+                        ctx.font = '12px Arial';
+                        ctx.textAlign = 'center';
+                        const midX = (currentPath[0].x + mousePos.x) / 2;
+                        const midY = (currentPath[0].y + mousePos.y) / 2;
+                        ctx.fillText(`${formattedDistance} ${unit}`, midX, midY - 10);
+                    }
+                    break;
+            }
+
+            ctx.restore();
+        }
+
+        // Event handlers
+        function handleMouseDown(e) {
+            const pos = getMousePos(e);
+            const snappedPos = snapToGrid(pos);
+            
+            mousePos = snappedPos;
+            startPos = snappedPos;
+            
+            updateStatus();
+
+            switch (currentTool) {
+                case 'line':
+                case 'rectangle':
+                case 'circle':
+                    isDrawing = true;
+                    currentPath = [snappedPos];
+                    break;
+
+                case 'polygon':
+                    if (!isDrawing) {
+                        isDrawing = true;
+                        currentPath = [snappedPos];
+                        setDrawingState(true);
+                    } else {
+                        currentPath.push(snappedPos);
+                    }
+                    break;
+            }
+        }
+
+        function handleMouseMove(e) {
+            const pos = getMousePos(e);
+            const snappedPos = snapToGrid(pos);
+            
+            mousePos = snappedPos;
+            updateStatus();
+            
+            if (isDrawing) {
+                // For freehand drawing, add points continuously
+                if (currentTool === 'freehand') {
+                    currentPath.push(snappedPos);
+                }
+                redrawCanvas();
+            }
+        }
+
+        function handleMouseUp(e) {
+            if (!isDrawing) return;
+
+            const pos = getMousePos(e);
+            const snappedPos = snapToGrid(pos);
+
+            // Create object
+            let newObject = null;
+            const strokeColor = document.getElementById('strokeColor').value;
+            const fillColor = document.getElementById('fillColor').value;
+            const strokeWidth = parseInt(document.getElementById('strokeWidth').value);
+
+            switch (currentTool) {
+                case 'line':
+                    if (currentPath.length >= 1) {
+                        newObject = {
+                            id: Date.now(),
+                            type: 'line',
+                            points: [currentPath[0], snappedPos],
+                            strokeColor,
+                            fillColor,
+                            strokeWidth
+                        };
+                    }
+                    break;
+
+                case 'rectangle':
+                    if (currentPath.length >= 1) {
+                        newObject = {
+                            id: Date.now(),
+                            type: 'rectangle',
+                            x: currentPath[0].x,
+                            y: currentPath[0].y,
+                            width: snappedPos.x - currentPath[0].x,
+                            height: snappedPos.y - currentPath[0].y,
+                            strokeColor,
+                            fillColor,
+                            strokeWidth
+                        };
+                    }
+                    break;
+
+                case 'circle':
+                    if (currentPath.length >= 1) {
+                        const radius = Math.sqrt(
+                            Math.pow(snappedPos.x - currentPath[0].x, 2) + 
+                            Math.pow(snappedPos.y - currentPath[0].y, 2)
+                        );
+                        newObject = {
+                            id: Date.now(),
+                            type: 'circle',
+                            x: currentPath[0].x,
+                            y: currentPath[0].y,
+                            radius: radius,
+                            strokeColor,
+                            fillColor,
+                            strokeWidth
+                        };
+                    }
+                    break;
+
+                case 'polygon':
+                    if (currentPath.length >= 2) {
+                        // Complete polygon by connecting to first point
+                        const completedPath = [...currentPath, snappedPos];
+                        newObject = {
+                            id: Date.now(),
+                            type: 'polygon',
+                            points: completedPath,
+                            strokeColor,
+                            fillColor,
+                            strokeWidth
+                        };
+                    }
+                    break;
+
+                case 'freehand':
+                    if (currentPath.length >= 2) {
+                        newObject = {
+                            id: Date.now(),
+                            type: 'freehand',
+                            points: [...currentPath, snappedPos],
+                            strokeColor,
+                            fillColor,
+                            strokeWidth
+                        };
+                    }
+                    break;
+
+                case 'measure':
+                    if (currentPath.length >= 1) {
+                        // Create measurement line
+                        const distance = calculateDistance(currentPath[0], snappedPos);
+                        const unit = document.getElementById('measurementUnit').value;
+                        const formattedDistance = formatMeasurement(distance / 100, unit);
+                        
+                        newObject = {
+                            id: Date.now(),
+                            type: 'measurement',
+                            points: [currentPath[0], snappedPos],
+                            distance: formattedDistance,
+                            unit: unit,
+                            strokeColor: '#ff4444',
+                            fillColor: 'transparent',
+                            strokeWidth: 2
+                        };
+                    }
+                    break;
+            }
+
+            if (newObject) {
+                objects.push(newObject);
+                saveState();
+            }
+
+            // Reset
+            isDrawing = false;
+            currentPath = [];
+            startPos = null;
+            redrawCanvas();
+            updateSelectionInfo();
+        }
+
+        function updateSelectionInfo() {
+            const count = selectedObjects.length;
+            document.getElementById('selectedCount').textContent = `${count} object${count !== 1 ? 's' : ''}`;
+            
+            if (count === 1) {
+                const obj = objects.find(o => o.id === selectedObjects[0]);
+                if (obj) {
+                    document.getElementById('selectedType').textContent = obj.type;
+                    
+                    let length = 0, area = 0;
+                    if (obj.type === 'line' && obj.points) {
+                        length = calculateDistance(obj.points[0], obj.points[1]);
+                    } else if (obj.type === 'rectangle') {
+                        length = 2 * (Math.abs(obj.width) + Math.abs(obj.height));
+                        area = Math.abs(obj.width) * Math.abs(obj.height);
+                    }
+                    
+                    const unit = document.getElementById('measurementUnit').value;
+                    document.getElementById('selectedLength').textContent = formatMeasurement(length / 100, unit);
+                    document.getElementById('selectedArea').textContent = formatMeasurement(area / 10000, unit);
+                }
+            } else {
+                document.getElementById('selectedType').textContent = count > 1 ? 'Multiple' : 'None';
+                document.getElementById('selectedLength').textContent = '0';
+                document.getElementById('selectedArea').textContent = '0';
+            }
+        }
+
+        function updateStatus() {
+            document.getElementById('status-tool').textContent = `Tool: ${currentTool}`;
+            document.getElementById('status-position').textContent = `Position: ${Math.round(mousePos.x)}, ${Math.round(mousePos.y)}`;
+        }
+
+        // Tool selection
+        function selectTool(tool) {
+            currentTool = tool;
+            document.querySelectorAll('.tool-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-tool="${tool}"]`).classList.add('active');
+            updateStatus();
+        }
+
+        // View switching
+        function switchView(view) {
+            document.querySelectorAll('.view-toggle button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`view${view}`).classList.add('active');
+
+            if (view === '2d') {
+                canvas2d.style.display = 'block';
+                canvas3d.classList.remove('active');
+            } else {
+                canvas2d.style.display = 'none';
+                canvas3d.classList.add('active');
+                generate3DView();
+            }
+        }
+
+        function generateInteractive3D() {
+            if (objects.length === 0) {
+                showNotification('Please create some 2D objects first!', 'warning');
+                return;
+            }
+
+            if (!is3DInitialized) {
+                initThreeJS();
+            }
+
+            document.getElementById('empty-3d').style.display = 'none';
+            generate3DModel();
+            showNotification('3D Model Generated Successfully!', 'success');
+        }
+
+        function initThreeJS() {
+            const canvas = document.getElementById('three-canvas');
+            
+            // Scene setup
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xf0f0f0);
+            
+            // Camera setup
+            camera = new THREE.PerspectiveCamera(75, canvas.offsetWidth / canvas.offsetHeight, 0.1, 1000);
+            camera.position.set(50, 50, 50);
+            
+            // Renderer setup
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+            renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(100, 100, 50);
+            directionalLight.castShadow = true;
+            directionalLight.shadow.mapSize.width = 2048;
+            directionalLight.shadow.mapSize.height = 2048;
+            scene.add(directionalLight);
+            
+            // Controls (simplified orbit controls)
+            setupControls();
+            
+            // Grid
+            const gridHelper = new THREE.GridHelper(200, 50);
+            scene.add(gridHelper);
+            
+            is3DInitialized = true;
+            animate();
+        }
+
+        function setupControls() {
+            let mouseX = 0, mouseY = 0;
+            let isMouseDown = false;
+            
+            const canvas = document.getElementById('three-canvas');
+            
+            canvas.addEventListener('mousedown', (event) => {
+                isMouseDown = true;
+                mouseX = event.clientX;
+                mouseY = event.clientY;
+            });
+            
+            canvas.addEventListener('mouseup', () => {
+                isMouseDown = false;
+            });
+            
+            canvas.addEventListener('mousemove', (event) => {
+                if (isMouseDown) {
+                    const deltaX = event.clientX - mouseX;
+                    const deltaY = event.clientY - mouseY;
+                    
+                    camera.position.x += deltaX * 0.1;
+                    camera.position.y -= deltaY * 0.1;
+                    camera.lookAt(0, 0, 0);
+                    
+                    mouseX = event.clientX;
+                    mouseY = event.clientY;
+                }
+            });
+            
+            canvas.addEventListener('wheel', (event) => {
+                const scale = event.deltaY > 0 ? 1.1 : 0.9;
+                camera.position.multiplyScalar(scale);
+            });
+        }
+
+        function generate3DModel() {
+            // Clear existing 3D objects
+            threeObjects.forEach(obj => scene.remove(obj));
+            threeObjects = [];
+            
+            const wallHeight = parseFloat(document.getElementById('wallHeight').value);
+            const wallThickness = parseFloat(document.getElementById('wallThickness').value);
+            const material = document.getElementById('wallMaterial').value;
+            const texture = document.getElementById('wallTexture').value;
+            
+            objects.forEach(obj => {
+                let threeObj = null;
+                
+                switch (obj.type) {
+                    case 'rectangle':
+                        threeObj = create3DRectangle(obj, wallHeight, wallThickness, material);
+                        break;
+                    case 'line':
+                        threeObj = create3DLine(obj, wallHeight, wallThickness, material);
+                        break;
+                    case 'polygon':
+                        threeObj = create3DPolygon(obj, wallHeight, wallThickness, material);
+                        break;
+                    case 'room':
+                        threeObj = create3DRoom(obj, wallHeight, wallThickness, material);
+                        break;
+                }
+                
+                if (threeObj) {
+                    threeObj.userData = { original2D: obj };
+                    threeObjects.push(threeObj);
+                    scene.add(threeObj);
+                }
+            });
+            
+            // Update 3D measurements
+            update3DMeasurements();
+        }
+
+        function create3DRectangle(obj, height, thickness, material) {
+            const geometry = new THREE.BoxGeometry(
+                Math.abs(obj.width) / 100, 
+                height, 
+                Math.abs(obj.height) / 100
+            );
+            
+            const meshMaterial = new THREE.MeshLambertMaterial({ 
+                color: getMaterialColor(material),
+                transparent: true,
+                opacity: 0.8
+            });
+            
+            const mesh = new THREE.Mesh(geometry, meshMaterial);
+            mesh.position.set(
+                (obj.x + obj.width/2) / 100,
+                height / 2,
+                (obj.y + obj.height/2) / 100
+            );
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            
+            return mesh;
+        }
+
+        function create3DLine(obj, height, thickness, material) {
+            if (!obj.points || obj.points.length < 2) return null;
+            
+            const start = obj.points[0];
+            const end = obj.points[1];
+            const length = Math.sqrt(
+                Math.pow(end.x - start.x, 2) + Math.pow(end.y - start.y, 2)
+            ) / 100;
+            
+            const geometry = new THREE.BoxGeometry(thickness, height, length);
+            const meshMaterial = new THREE.MeshLambertMaterial({ 
+                color: getMaterialColor(material),
+                transparent: true,
+                opacity: 0.8
+            });
+            
+            const mesh = new THREE.Mesh(geometry, meshMaterial);
+            mesh.position.set(
+                (start.x + end.x) / 200,
+                height / 2,
+                (start.y + end.y) / 200
+            );
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            
+            return mesh;
+        }
+
+        function create3DPolygon(obj, height, thickness, material) {
+            if (!obj.points || obj.points.length < 3) return null;
+            
+            // Create a simple box for polygon (simplified)
+            const geometry = new THREE.BoxGeometry(2, height, 2);
+            const meshMaterial = new THREE.MeshLambertMaterial({ 
+                color: getMaterialColor(material),
+                transparent: true,
+                opacity: 0.8
+            });
+            
+            const mesh = new THREE.Mesh(geometry, meshMaterial);
+            mesh.position.set(0, height / 2, 0);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            
+            return mesh;
+        }
+
+        function create3DRoom(obj, height, thickness, material) {
+            // Create room walls with proper thickness based on wall type
+            const wallThicknessMultiplier = obj.wallType === 'exterior' ? 2 : obj.wallType === 'load-bearing' ? 1.5 : 1;
+            const actualThickness = thickness * wallThicknessMultiplier;
+            
+            const geometry = new THREE.BoxGeometry(
+                Math.abs(obj.width) / 100, 
+                height, 
+                Math.abs(obj.height) / 100
+            );
+            
+            const meshMaterial = new THREE.MeshLambertMaterial({ 
+                color: getMaterialColor(material),
+                transparent: true,
+                opacity: 0.8
+            });
+            
+            const mesh = new THREE.Mesh(geometry, meshMaterial);
+            mesh.position.set(
+                (obj.x + obj.width/2) / 100,
+                height / 2,
+                (obj.y + obj.height/2) / 100
+            );
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            
+            // Add room label
+            const textGeometry = new THREE.PlaneGeometry(2, 1);
+            const textMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0x333333,
+                transparent: true,
+                opacity: 0.8
+            });
+            const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+            textMesh.position.set(
+                (obj.x + obj.width/2) / 100,
+                height + 0.5,
+                (obj.y + obj.height/2) / 100
+            );
+            
+            return mesh;
+        }
+
+        function getMaterialColor(material) {
+            const colors = {
+                concrete: 0xa0a0a0,
+                brick: 0xb87333,
+                wood: 0x8b4513,
+                steel: 0xc0c0c0,
+                glass: 0x87ceeb
+            };
+            return colors[material] || colors.concrete;
+        }
+
+        function update3DMeasurements() {
+            let totalArea = 0;
+            let totalLength = 0;
+            
+            threeObjects.forEach(obj => {
+                if (obj.geometry) {
+                    const bbox = new THREE.Box3().setFromObject(obj);
+                    const size = bbox.getSize(new THREE.Vector3());
+                    totalArea += size.x * size.z;
+                    totalLength += size.x + size.z;
+                }
+            });
+            
+            const unit = document.getElementById('measurementUnit').value;
+            document.getElementById('3d-area').textContent = formatMeasurement(totalArea, unit);
+            document.getElementById('3d-distance').textContent = formatMeasurement(totalLength, unit);
+            document.getElementById('3d-area-unit').textContent = unit + '²';
+            document.getElementById('3d-unit').textContent = unit;
+        }
+
+        function animate() {
+            if (!is3DInitialized) return;
+            
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+
+        function export3D() {
+            alert('3D Export functionality would be implemented here!\n\nThis would export your building to formats like:\n• OBJ\n• STL\n• GLTF\n• DAE');
+        }
+
+        // Room template functionality
+        function insertRoomTemplate() {
+            const roomType = document.getElementById('roomTemplate').value;
+            const wallType = document.getElementById('wallType').value;
+            
+            if (roomType === 'custom') {
+                showNotification('Please select a room type first!', 'warning');
+                return;
+            }
+            
+            const roomDimensions = getRoomDimensions(roomType);
+            const centerX = canvas2d.width / 2;
+            const centerY = canvas2d.height / 2;
+            
+            // Create room rectangle
+            const roomObject = {
+                id: Date.now(),
+                type: 'room',
+                x: centerX - roomDimensions.width / 2,
+                y: centerY - roomDimensions.height / 2,
+                width: roomDimensions.width,
+                height: roomDimensions.height,
+                roomType: roomType,
+                wallType: wallType,
+                strokeColor: wallType === 'exterior' ? '#8B4513' : '#666666',
+                fillColor: 'transparent',
+                strokeWidth: wallType === 'load-bearing' ? 4 : 2
+            };
+            
+            objects.push(roomObject);
+            saveState();
+            redrawCanvas();
+            updateSelectionInfo();
+            showNotification(`${roomDimensions.name} inserted successfully!`, 'success');
+        }
+
+        function getRoomDimensions(roomType) {
+            const dimensions = {
+                'bedroom': { width: 360, height: 300, name: 'Bedroom (12x10 ft)' },
+                'living': { width: 480, height: 360, name: 'Living Room (16x12 ft)' },
+                'kitchen': { width: 300, height: 240, name: 'Kitchen (10x8 ft)' },
+                'bathroom': { width: 240, height: 180, name: 'Bathroom (8x6 ft)' },
+                'office': { width: 300, height: 300, name: 'Office (10x10 ft)' }
+            };
+            return dimensions[roomType] || { width: 300, height: 300, name: 'Custom Room' };
+        }
+
+        // Sync 2D to 3D functionality
+        function sync2DTo3D() {
+            if (objects.length === 0) {
+                showNotification('Please create some 2D objects first!', 'warning');
+                return;
+            }
+
+            if (!is3DInitialized) {
+                initThreeJS();
+            }
+
+            document.getElementById('empty-3d').style.display = 'none';
+            generate3DModel();
+            showNotification('2D design synchronized to 3D successfully!', 'success');
+        }
+
+        // Enhanced tool selection with sync functionality
+        function selectTool(tool) {
+            if (tool === 'sync-2d-3d') {
+                sync2DTo3D();
+                return;
+            }
+            
+            currentTool = tool;
+            document.querySelectorAll('.tool-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            const toolBtn = document.querySelector(`[data-tool="${tool}"]`);
+            if (toolBtn) {
+                toolBtn.classList.add('active');
+            }
+            updateStatus();
+            
+            // Clear current drawing state when switching tools
+            if (isDrawing) {
+                isDrawing = false;
+                currentPath = [];
+                startPos = null;
+            }
+        }
+
+        // Event listeners
+        canvas2d.addEventListener('mousedown', handleMouseDown);
+        canvas2d.addEventListener('mousemove', handleMouseMove);
+        canvas2d.addEventListener('mouseup', handleMouseUp);
+
+        document.querySelectorAll('.tool-button').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                selectTool(e.target.dataset.tool);
+            });
+        });
+
+        document.getElementById('view2d').addEventListener('click', () => switchView('2d'));
+        document.getElementById('view3d').addEventListener('click', () => switchView('3d'));
+
+        // Enhanced property change listeners
+        document.getElementById('showGrid').addEventListener('change', redrawCanvas);
+        document.getElementById('gridSize').addEventListener('change', redrawCanvas);
+        document.getElementById('snapToGrid').addEventListener('change', redrawCanvas);
+        document.getElementById('smartSnap').addEventListener('change', redrawCanvas);
+        document.getElementById('autoMeasure').addEventListener('change', redrawCanvas);
+        document.getElementById('measurementUnit').addEventListener('change', redrawCanvas);
+        document.getElementById('measurementPrecision').addEventListener('change', redrawCanvas);
+        
+        // Drawing settings
+        document.getElementById('strokeColor').addEventListener('change', (e) => {
+            if (selectedObjects.length === 1) {
+                const obj = objects.find(o => o.id === selectedObjects[0]);
+                if (obj) {
+                    obj.strokeColor = e.target.value;
+                    redrawCanvas();
+                }
+            }
+        });
+        
+        document.getElementById('strokeWidth').addEventListener('input', (e) => {
+            document.getElementById('strokeWidthValue').textContent = e.target.value + 'px';
+            if (selectedObjects.length === 1) {
+                const obj = objects.find(o => o.id === selectedObjects[0]);
+                if (obj) {
+                    obj.strokeWidth = parseInt(e.target.value);
+                    redrawCanvas();
+                }
+            }
+        });
+        
+        document.getElementById('opacity').addEventListener('input', (e) => {
+            document.getElementById('opacityValue').textContent = Math.round(e.target.value * 100) + '%';
+        });
+
+        // 3D settings
+        document.getElementById('wallHeight').addEventListener('change', () => {
+            if (is3DInitialized) {
+                generate3DModel();
+            }
+        });
+        
+        document.getElementById('wallThickness').addEventListener('change', () => {
+            if (is3DInitialized) {
+                generate3DModel();
+            }
+        });
+        
+        document.getElementById('wallMaterial').addEventListener('change', () => {
+            if (is3DInitialized) {
+                generate3DModel();
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                switch (e.key) {
+                    case 'z':
+                        e.preventDefault();
+                        if (e.shiftKey) {
+                            redo();
+                        } else {
+                            undo();
+                        }
+                        break;
+                    case 'y':
+                        e.preventDefault();
+                        redo();
+                        break;
+                }
+            }
+            
+            switch (e.key.toLowerCase()) {
+                case 'v': selectTool('select'); break;
+                case 'l': selectTool('line'); break;
+                case 'r': selectTool('rectangle'); break;
+                case 'c': selectTool('circle'); break;
+                case 'p': selectTool('polygon'); break;
+                case 'f': selectTool('freehand'); break;
+                case 'm': selectTool('measure'); break;
+                case 'q': selectTool('room'); break;
+                case 's': selectTool('sync-2d-3d'); break;
+                case 'delete':
+                case 'backspace':
+                    deleteSelectedObjects();
+                    break;
+                case 'escape':
+                    selectedObjects = [];
+                    redrawCanvas();
+                    updateSelectionInfo();
+                    break;
+            }
+        });
+
+        // Tool button handlers
+        document.querySelectorAll('.tool-button').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const tool = e.target.dataset.tool;
+                if (tool) {
+                    switch (tool) {
+                        case 'undo':
+                            undo();
+                            break;
+                        case 'redo':
+                            redo();
+                            break;
+                        case 'delete':
+                            deleteSelectedObjects();
+                            break;
+                        case 'zoom-in':
+                            zoomIn();
+                            break;
+                        case 'zoom-out':
+                            zoomOut();
+                            break;
+                        case 'fit-screen':
+                            fitToScreen();
+                            break;
+                        default:
+                            selectTool(tool);
+                            break;
+                    }
+                }
+            });
+        });
+
+        function deleteSelectedObjects() {
+            if (selectedObjects.length > 0) {
+                selectedObjects.forEach(id => {
+                    objects = objects.filter(obj => obj.id !== id);
+                });
+                selectedObjects = [];
+                saveState();
+                redrawCanvas();
+                updateSelectionInfo();
+                showNotification(`${selectedObjects.length} object(s) deleted`, 'success');
+            }
+        }
+
+        function zoomIn() {
+            zoom *= 1.2;
+            updateZoom();
+        }
+
+        function zoomOut() {
+            zoom /= 1.2;
+            updateZoom();
+        }
+
+        function fitToScreen() {
+            zoom = 1;
+            panOffset = { x: 0, y: 0 };
+            updateZoom();
+        }
+
+        function updateZoom() {
+            document.getElementById('status-zoom').textContent = `Zoom: ${Math.round(zoom * 100)}%`;
+            redrawCanvas();
+        }
+
+        // View controls
+        document.querySelectorAll('.view-control').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.view-control').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                // Handle view changes here
+            });
+        });
+
+        // Initialize
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+        updateStatus();
+        saveState(); // Initial state
+    </script>
+</body>
+</html>

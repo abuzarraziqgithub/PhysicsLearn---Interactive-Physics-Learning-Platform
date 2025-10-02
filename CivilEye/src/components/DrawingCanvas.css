@@ -1,0 +1,114 @@
+.canvas-container {
+  flex: 1;
+  position: relative;
+  background: white;
+  overflow: hidden;
+}
+
+.drawing-canvas {
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+  display: block;
+}
+
+.canvas-status {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(52, 73, 94, 0.9);
+  color: white;
+  padding: 5px 15px;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.canvas-status span {
+  margin-right: 20px;
+}
+
+/* Tool-specific cursors */
+.drawing-canvas.select-mode {
+  cursor: default;
+}
+
+.drawing-canvas.line-mode {
+  cursor: crosshair;
+}
+
+.drawing-canvas.rectangle-mode {
+  cursor: crosshair;
+}
+
+.drawing-canvas.circle-mode {
+  cursor: crosshair;
+}
+
+.drawing-canvas.polygon-mode {
+  cursor: crosshair;
+}
+
+.drawing-canvas.freehand-mode {
+  cursor: crosshair;
+}
+
+.drawing-canvas.measure-mode {
+  cursor: crosshair;
+}
+
+.drawing-canvas.text-mode {
+  cursor: text;
+}
+
+/* Grid overlay */
+.grid-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+/* Selection handles */
+.selection-handle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #3498db;
+  border: 2px solid white;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.selection-handle:hover {
+  background: #2980b9;
+  transform: scale(1.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .canvas-status {
+    font-size: 10px;
+    padding: 3px 10px;
+  }
+  
+  .canvas-status span {
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .canvas-status {
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .canvas-status span {
+    margin-right: 0;
+  }
+}
